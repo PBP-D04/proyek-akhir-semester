@@ -11,12 +11,12 @@ import 'package:proyek_akhir_semester/provider/auth_provider.dart';
 
 import '../models/user.dart';
 
-class LoginPageDummy extends ConsumerStatefulWidget {
+class LoginPage extends ConsumerStatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
 
-class _LoginPageState extends ConsumerState<LoginPageDummy> {
+class _LoginPageState extends ConsumerState<LoginPage> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
@@ -37,7 +37,7 @@ class _LoginPageState extends ConsumerState<LoginPageDummy> {
       print(resData['user']);
       User user = User.fromJson(resData['user']);
       ref.read(authProvider.notifier).setUserData(user);
-      Navigator.pushReplacementNamed(context, '/app');// Ganti dengan nama route halaman selanjutnya setelah login
+      Navigator.pushReplacementNamed(context, '/');// Ganti dengan nama route halaman selanjutnya setelah login
     } else {
       // Tampilkan pesan kesalahan jika masuk gagal
       showDialog(
@@ -93,6 +93,13 @@ class _LoginPageState extends ConsumerState<LoginPageDummy> {
                fetchHistory();
               },
               child: Text('Login'),
+            ),
+            SizedBox(height: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.pushReplacementNamed(context, '/');
+              },
+              child: Text('Login as Guest'),
             ),
           ],
         ),
