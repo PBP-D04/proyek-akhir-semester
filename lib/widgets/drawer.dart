@@ -139,7 +139,7 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, '/login');
+                        Navigator.pushNamed(context, '/login');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol
@@ -231,7 +231,6 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                   title: Text('Logout', style: TextStyle(fontSize: responsiveValue.subtitleFontSize),),
                   onTap: () {
                     ref.read(authProvider.notifier).clearUserData();
-                    Navigator.pushReplacementNamed(context, '/login');
                   },
                 ),) : Container()
               ],

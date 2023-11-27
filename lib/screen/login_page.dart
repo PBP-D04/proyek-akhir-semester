@@ -8,6 +8,7 @@ import 'dart:convert';
 
 import 'package:proyek_akhir_semester/api/api_config.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
+import 'package:proyek_akhir_semester/screen/register_page.dart';
 
 import '../models/user.dart';
 
@@ -86,20 +87,23 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                 border: OutlineInputBorder(),
               ),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () async {
                await  loginUser();// Panggil fungsi loginUser ketika tombol ditekan
                fetchHistory();
               },
-              child: Text('Login'),
+              child: const Text('Login'),
             ),
-            SizedBox(height: 20.0),
+            const SizedBox(height: 12.0),
             ElevatedButton(
               onPressed: () {
-                Navigator.pushReplacementNamed(context, '/');
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => RegisterPage()), // Navigate to the register page
+                );
               },
-              child: Text('Login as Guest'),
+              child: const Text('Create account'),
             ),
           ],
         ),

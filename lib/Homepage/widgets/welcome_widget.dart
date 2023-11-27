@@ -55,7 +55,7 @@ class WelcomeWidget extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/login');
+                          Navigator.pushNamed(context, '/login');
                         },
                         child: Text('Login', style:  TextStyle(fontSize: responsiveValue.subtitleFontSize, color: Colors.white, ),),
                       ),
