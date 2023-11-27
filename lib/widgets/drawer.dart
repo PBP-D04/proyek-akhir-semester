@@ -230,10 +230,8 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                   leading: Icon(Icons.logout), // Ikon untuk halaman utama
                   title: Text('Logout', style: TextStyle(fontSize: responsiveValue.subtitleFontSize),),
                   onTap: () {
-                    //todo: implementasi logout
-                    // logout(ref, context);
-                    // Tindakan ketika ListTile Halaman Utama diklik
-                    // Misalnya: Navigasi ke halaman utama
+                    ref.read(authProvider.notifier).clearUserData();
+                    Navigator.pushReplacementNamed(context, '/login');
                   },
                 ),) : Container()
               ],
