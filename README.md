@@ -9,7 +9,7 @@
 | Isa Citra Buana | 2206081465 | isaui | isadestroyed17@gmail.com
 | Jocelyn Nathanie Arwin | 2206082171 | jnathanie | jocelyn.nathanie@ui.ac.id
 | Mahartha Gemilang | 2206819211 | CyberSleeper | mahartha.gemilang@gmail.com
-| Sheryl Ivana W. | 2206824943 |
+| Sheryl Ivana W. | 2206824943 | sunflawlxs | sherylivana99@gmail.com
 
 ---
 
