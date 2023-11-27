@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proyek_akhir_semester/DetailBook/screens/detailbook_page.dart';
+import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/widgets/love_button.dart';
 import 'package:proyek_akhir_semester/Homepage/widgets/rating.dart';
 import 'package:proyek_akhir_semester/api/api_config.dart';
@@ -106,6 +108,9 @@ class BookCard extends ConsumerWidget {
           /*Navigator.of(context).push(MaterialPageRoute(builder: (context){
             return ProductDetailPage(productId: shopItem.itemId,);
           }));*/
+          Navigator.of(context).push(MaterialPageRoute(builder: (context){
+              return ProductDetailPage(productId: book.id);
+          }));
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

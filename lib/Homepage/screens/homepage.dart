@@ -1,5 +1,6 @@
 import 'dart:math';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proyek_akhir_semester/DetailBook/screens/detailbook_page.dart';
 import 'package:proyek_akhir_semester/Homepage/models/book.dart';
 import 'package:proyek_akhir_semester/Homepage/models/sorting_type.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/preference_provider.dart';
@@ -159,9 +160,11 @@ class _HomeState extends ConsumerState<Home>{
                                         ),),
                                         SizedBox(height: 8,),
                                         ElevatedButton(onPressed: (){
+                                          
                                           Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                                            return Center(child: Text('Please implement this'),);
+                                              return ProductDetailPage(productId: book.id);
                                           }));
+                                        
                                         }, style:
                                         ElevatedButton.styleFrom(padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8)), child:Text('Lihat Produk', textAlign: TextAlign.left, style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold,
                                             fontSize: responsiveValue.titleFontSize),) )
