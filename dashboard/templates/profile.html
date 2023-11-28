@@ -1,0 +1,149 @@
+import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:django_app/models/book.dart';
+import 'package:django_app/services/book_service.dart';
+import 'package:django_app/widgets/book_list.dart';
+import 'package:django_app/widgets/book_form.dart';
+
+class DashboardPage extends StatefulWidget {
+  const DashboardPage({Key? key}) : super(key: key);
+
+  @override
+  _DashboardPageState createState() => _DashboardPageState();
+}
+
+class _DashboardPageState extends State<DashboardPage> {
+  // A flag to indicate whether the user is adding or editing a book
+  bool _isEditing = false;
+
+  // A controller to handle the input of the book title
+  TextEditingController _titleController = TextEditingController();
+
+  // A controller to handle the input of the book author
+  TextEditingController _authorController = TextEditingController();
+
+  // A variable to store the selected book for editing or deleting
+  Book? _selectedBook;
+
+  // A method to clear the input controllers and reset the editing flag
+  void _clearInput() {
+    _titleController.clear();
+    _authorController.clear();
+    _isEditing = false;
+    _selectedBook = null;
+  }
+
+  // A method to show a confirmation dialog before deleting a book
+  void _showDeleteDialog(BuildContext context, Book book) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('Delete Book'),
+          content: Text('Are you sure you want to delete ${book.title}?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text('Cancel'),
+            ),
+            TextButton(
+              onPressed: () async {
+                await Provider.of<BookService>(context, listen: false)
+                    .deleteBook(book.id);
+                _clearInput();
+                Navigator.pop(context);
+              },
+              child: Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Get the current user role from the provider
+    String role = Provider.of<String>(context);
+
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Dashboard'),
+      ),
+      body: Column(
+        children: [
+          // A widget to display the book form for adding or editing a book
+          BookForm(
+            titleController: _titleController,
+            authorController: _authorController,
+            isEditing: _isEditing,
+            onSubmit: () async {
+              // Validate the input fields
+              if (_titleController.text.isEmpty ||
+                  _authorController.text.isEmpty) {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('Please fill in all the fields'),
+                  ),
+                );
+                return;
+              }
+
+              // Create a new book object from the input values
+              Book book = Book(
+                id: _isEditing ? _selectedBook!.id : null,
+                title: _titleController.text,
+                author: _authorController.text,
+                owner: role,
+              );
+
+              // Call the appropriate service method depending on the editing flag
+              if (_isEditing) {
+                await Provider.of<BookService>(context, listen: false)
+                    .updateBook(book);
+              } else {
+                await Provider.of<BookService>(context, listen: false)
+                    .createBook(book);
+              }
+
+              // Clear the input and show a success message
+              _clearInput();
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Book ${_isEditing ? 'updated' : 'added'} successfully'),
+                ),
+              );
+            },
+            onCancel: () {
+              // Clear the input and reset the editing flag
+              _clearInput();
+            },
+          ),
+          // A widget to display the list of books for the current user role
+          Expanded(
+            child: BookList(
+              role: role,
+              onEdit: (book) {
+                // Set the editing flag and the selected book
+                setState(() {
+                  _isEditing = true;
+                  _selectedBook = book;
+                });
+
+                // Populate the input controllers with the book data
+                _titleController.text = book.title;
+                _authorController.text = book.author;
+              },
+              onDelete: (book) {
+                // Show the confirmation dialog before deleting the book
+                _showDeleteDialog(context, book);
+              },
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
