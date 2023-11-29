@@ -159,7 +159,7 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        // Tambahkan aksi yang ingin dilakukan saat tombol ditekan
+                        Navigator.pushNamed(context, '/register');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol
