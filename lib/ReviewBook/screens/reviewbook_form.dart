@@ -9,8 +9,8 @@ class ReviewFormPage extends StatefulWidget {
 
 class _ReviewFormPageState extends State<ReviewFormPage> {
   final _formKey = GlobalKey<FormState>();
-  int _rating = 0;
-  String _comment = '';
+  int _starRating = 0;
+  String _comment = "";
 
   @override
   Widget build(BuildContext context) {
@@ -22,6 +22,8 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
         backgroundColor: Colors.indigo,
         foregroundColor: Colors.white,
       ),
+      // TODO: Tambahkan drawer yang sudah dibuat di sini
+      // drawer: const LeftDrawer(),
       body: Form(
         key: _formKey,
         child: SingleChildScrollView(
@@ -30,53 +32,94 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
             children: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: TextFormField(
+                child: DropdownButtonFormField<int>(
                   decoration: InputDecoration(
-                    hintText: "Ulasan Komentar (Opsional)",
-                    labelText: "Komentar",
+                    labelText: 'Bintang',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
                     ),
                   ),
-                  onChanged: (value) {
-                    _comment = value;
-                  },
-                ),
-              ),
-              ListTile(
-                title: const Text('Rating (1-5)'),
-                trailing: DropdownButton<int>(
-                  value: _rating,
+                  value: _starRating,
+                  items: List.generate(5, (index) => index + 1)
+                      .map<DropdownMenuItem<int>>(
+                          (int value) => DropdownMenuItem<int>(
+                                value: value,
+                                child: Text('$value Bintang'),
+                              ))
+                      .toList(),
                   onChanged: (int? newValue) {
                     setState(() {
-                      _rating = newValue!;
+                      _starRating = newValue!;
                     });
                   },
-                  items: <int>[1, 2, 3, 4, 5]
-                      .map<DropdownMenuItem<int>>((int value) {
-                    return DropdownMenuItem<int>(
-                      value: value,
-                      child: Text(value.toString()),
-                    );
-                  }).toList(),
+                  validator: (value) {
+                    if (value == null || value == 0) {
+                      return 'Mohon pilih jumlah bintang';
+                    }
+                    return null;
+                  },
                 ),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(Colors.indigo),
+                child: TextFormField(
+                  decoration: InputDecoration(
+                    hintText: "Tulis komentar Anda di sini...",
+                    labelText: "Komentar (Opsional)",
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(5.0),
+                    ),
                   ),
-                  onPressed: () {
-                    if (_formKey.currentState!.validate() && _rating != 0) {
-                      // Proses submit ulasan
-                    } else {
-                      // Tampilkan pesan error jika rating belum dipilih
-                    }
+                  onChanged: (String? value) {
+                    setState(() {
+                      _comment = value ?? '';
+                    });
                   },
-                  child: const Text(
-                    "Submit Ulasan",
-                    style: TextStyle(color: Colors.white),
+                  maxLines: 3,
+                ),
+              ),
+              Align(
+                alignment: Alignment.bottomCenter,
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: ElevatedButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all(Colors.indigo),
+                    ),
+                    onPressed: () {
+                      if (_formKey.currentState!.validate()) {
+                        // Simpan data ulasan
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return AlertDialog(
+                              title: const Text('Ulasan berhasil tersimpan'),
+                              content: SingleChildScrollView(
+                                child: ListBody(
+                                  children: [
+                                    Text('Bintang: $_starRating'),
+                                    Text('Komentar: $_comment'),
+                                  ],
+                                ),
+                              ),
+                              actions: [
+                                TextButton(
+                                  child: const Text('OK'),
+                                  onPressed: () {
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                      }
+                    },
+                    child: const Text(
+                      "Simpan Ulasan",
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ),
               ),
