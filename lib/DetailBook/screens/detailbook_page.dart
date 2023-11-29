@@ -1,6 +1,12 @@
+import 'dart:convert';
+
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart';
+import 'package:proyek_akhir_semester/DetailBook/screens/diskusi_page.dart';
+import 'package:proyek_akhir_semester/DetailBook/widgets/comment_item.dart';
 import 'package:proyek_akhir_semester/DetailBook/widgets/expandable_text.dart';
 import 'package:proyek_akhir_semester/DetailBook/widgets/product_mini_image_container.dart';
 import 'package:proyek_akhir_semester/DetailBook/widgets/review_widget.dart';
@@ -8,9 +14,11 @@ import 'package:proyek_akhir_semester/Homepage/api/like_book.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/screens/search_page.dart';
 import 'package:proyek_akhir_semester/Homepage/widgets/book_card.dart';
+import 'package:proyek_akhir_semester/api/api_config.dart';
 import 'package:proyek_akhir_semester/models/responsive.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
+import 'package:http/http.dart' as http;
 
 class ProductDetailPage extends ConsumerStatefulWidget{
   final int productId;
@@ -28,6 +36,46 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
   CarouselController controller = CarouselController();
   bool _isColoredAppBar = false;
 
+  Future<String> addComment(String text) async {
+    final user =ref.watch(authProvider);
+    if (user == null){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Anda belum login')));
+      return 'Unauthorized';
+    }
+
+    if (text.trim().isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Anda tidak menulis apapun')));
+      return 'Kosong';
+    }
+
+    final url = Uri.parse(BASE_URL+'/detail/add-comment-flutter/');
+    final response = await http.post(
+      url,
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(<String, dynamic>{
+        // Add other parameters as needed
+        'user_id':user.id,
+        'book_id':widget.productId,
+        'content':text,
+      }),
+    );
+    return 'Success';
+  }
+
+   void showForumDiskusi() {
+      final comments =  ref.watch(commentNotifierProvider);
+
+      showModalBottomSheet(context: context, builder: (context){
+        TextEditingController controller = TextEditingController();
+     
+       List<Comment> selectedComment = comments.where((element) => element.bookId == widget.productId).toList();
+        return Diskusi(productId: widget.productId);
+      });
+   }
+
+
   @override
   Widget build(BuildContext context) {
     final productId = widget.productId;
@@ -42,7 +90,8 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
     double _carouselHeight = getScreenSize(context) == ScreenSize.small ?250 :
     getScreenSize(context) == ScreenSize.medium ? 280 :300;
 
-    
+   
+
     responsiveValue.setResponsive(context);
     // TODO: implement build
     return Scaffold(
@@ -106,7 +155,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                 style: ElevatedButton.styleFrom(
                     padding: EdgeInsets.all(8)
                 ),
-                onPressed: (){},
+                onPressed: (){
+                  showForumDiskusi();
+                },
                 child: Text('Forum Diskusi', style: TextStyle(color: Colors.white, fontSize: responsiveValue.subtitleFontSize),),
 
               ),

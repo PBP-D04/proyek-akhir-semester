@@ -1,5 +1,7 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
@@ -49,6 +51,15 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         ref.read(booksProvider.notifier).updateLikeStatus(bookId, isLiked, userId);
          // Update Book
         break;
+
+      case 'new-comment':
+        final data = event.data;
+        dynamic decodedData = jsonDecode(jsonEncode(data)); //Mengatasi LinkedMap kalo di PC biar jadi Map<String, dynamic>
+        print('--------------------------------------');
+        print(decodedData);
+        Comment comment = Comment.fromJson(decodedData['message']);
+        ref.read(commentNotifierProvider.notifier).addComment(comment);
+
       default:
         break;
     }
