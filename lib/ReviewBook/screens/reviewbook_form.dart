@@ -1,17 +1,64 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
 
-class ReviewFormPage extends StatefulWidget {
-  const ReviewFormPage({super.key});
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
+import 'package:proyek_akhir_semester/Homepage/models/book.dart';
+import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
+import 'package:proyek_akhir_semester/Homepage/widgets/rating.dart';
+import 'package:proyek_akhir_semester/api/api_config.dart';
+import 'package:proyek_akhir_semester/provider/auth_provider.dart';
+
+class ReviewFormPage extends ConsumerStatefulWidget {
+  int bookId;
+  ReviewFormPage({super.key, required this.bookId});
 
   @override
-  State<ReviewFormPage> createState() => _ReviewFormPageState();
+  ConsumerState<ReviewFormPage> createState() => _ReviewFormPageState();
 }
 
-class _ReviewFormPageState extends State<ReviewFormPage> {
+class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
   final _formKey = GlobalKey<FormState>();
-  int _starRating = 0;
+  int _starRating = 1;
   String _comment = "";
   @override
+
+  Future<void> reviewBook(context, ref) async {
+    final user = ref.watch(authProvider);
+    final book = ref.watch(booksProvider);
+    final selectedBook = book[widget.bookId];
+    if(user == null){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Anda belum login')));
+      return;
+    }
+    if(selectedBook == null){
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Buku telah terhapus')));
+      return;
+    }
+    print('semoga bisaaaaaaaaaaaa');
+    const urlStr = '$BASE_URL/review/add-review-flutter/';
+    final data = {
+        'user_id':user.id,
+        'book_id':selectedBook.id,
+        'rating':_starRating,
+        'content':_comment,
+        'photo': 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTKazETeZCBVzGuEHvbfRheh5zg1Q38fp4blA&usqp=CAU'
+    };
+    try {
+      final response = await http.post(
+        Uri.parse(urlStr),
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(data)
+      );
+      print('aaaaaaaaaaaaaaaaakkkkkkk');
+
+    } catch (error) {
+      print('Error: $error');
+      // Tangani kesalahan seperti masalah koneksi atau kesalahan server
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Terjadi kesalahan')));
+    }
+  }
+
   Widget build(BuildContext context) {
     // final request = context.watch<CookieRequest>(); 
     return Scaffold(
@@ -114,6 +161,7 @@ class _ReviewFormPageState extends State<ReviewFormPage> {
                             );
                           },
                         );
+                        reviewBook(context, ref);
                       }
                     },
                     child: const Text(

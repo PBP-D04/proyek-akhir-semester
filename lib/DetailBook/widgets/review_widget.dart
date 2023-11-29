@@ -1,80 +1,31 @@
 import 'package:flutter/material.dart';
-class ReviewItem extends StatelessWidget {
-  final String username;
-  final int rating;
-  final String reviewText;
-  final String profileImage;
-
-  ReviewItem({
-    required this.username,
-    required this.rating,
-    required this.reviewText,
-    required this.profileImage,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(12.0),
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey),
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            children: [
-              CircleAvatar(
-                backgroundImage: NetworkImage(profileImage),
-                radius: 20.0,
-              ),
-              SizedBox(width: 12.0),
-              Text(
-                username,
-                style: TextStyle(fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-          SizedBox(height: 8.0),
-          Row(
-            children: List.generate(
-              5,
-                  (index) => Icon(
-                Icons.star,
-                color: index < rating ? Colors.yellow : Colors.grey,
-              ),
-            ),
-          ),
-          SizedBox(height: 8.0),
-          Text(reviewText),
-        ],
-      ),
-    );
-  }
-}
+import 'package:proyek_akhir_semester/ReviewBook/screens/reviewbook_form.dart';
+import 'package:proyek_akhir_semester/ReviewBook/screens/reviewbook_page.dart';
+import 'package:proyek_akhir_semester/ReviewBook/widgets/reviewbook_widgets.dart';
+import 'package:proyek_akhir_semester/models/review.dart';
 
 class ReviewsWidget extends StatelessWidget {
+  int bookId;
+  List<Review> reviews;
+    ReviewsWidget({
+      required this.reviews, required this.bookId
+    });
   @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        ReviewItem(
-          username: 'John Doe',
-          rating: 4,
-          reviewText: 'Great product, loved it!',
-          profileImage:
-          'https://www.waifu.com.mx/wp-content/uploads/2023/05/Waifu-Wishlist-Must-Have-Traits-and-Qualities-in-a-Beloved-Character.jpg', // Ganti dengan URL foto profil
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            IconButton(onPressed: (){
+              Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                           return DaftarReview(bookId: bookId,);
+                         }));
+            }, icon: Icon(Icons.add, color: Colors.black),)
+          ],
         ),
-        ReviewItem(
-          username: 'Jane Smith',
-          rating: 5,
-          reviewText: 'Excellent service, highly recommended!',
-          profileImage:
-          'https://www.waifu.com.mx/wp-content/uploads/2023/05/Waifu-Wishlist-Must-Have-Traits-and-Qualities-in-a-Beloved-Character.jpg', // Ganti dengan URL foto profil
-        ),
+        ...reviews.map((e) => ReviewItem(username: e.user.username, rating: e.rating, reviewText: e.content, profileImage: e.photoUrl??'')).toList().sublist(0, reviews.length > 2? 2 : reviews.length)
       ],
     );
   }

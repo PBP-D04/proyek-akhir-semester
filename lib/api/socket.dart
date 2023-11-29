@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
+import 'package:proyek_akhir_semester/ReviewBook/provider/review_provider.dart';
+import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 
@@ -49,6 +51,11 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         ref.read(booksProvider.notifier).updateLikeStatus(bookId, isLiked, userId);
          // Update Book
         break;
+        case 'new-review':
+        final data = event.data;
+        dynamic decodedData = jsonDecode(jsonEncode(data));
+        final message = decodedData['message'];
+        ref.read(reviewListProvider.notifier).addReview(Review.fromJson(message));
       default:
         break;
     }
