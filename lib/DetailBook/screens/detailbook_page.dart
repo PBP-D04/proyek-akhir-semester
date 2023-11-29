@@ -8,7 +8,9 @@ import 'package:proyek_akhir_semester/Homepage/api/like_book.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/screens/search_page.dart';
 import 'package:proyek_akhir_semester/Homepage/widgets/book_card.dart';
+import 'package:proyek_akhir_semester/ReviewBook/provider/review_provider.dart';
 import 'package:proyek_akhir_semester/models/responsive.dart';
+import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
 
@@ -34,6 +36,8 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
     final auth = ref.watch(authProvider);
     final items = ref.watch(booksProvider);
     final pickItem = items[productId];
+    List<Review> reviewList= ref.watch(reviewListProvider);
+    final selectedReviewList = reviewList.where((review) => review.bookId==widget.productId).toList();
     final anotherItems = items.entries
         .map((entry) => entry.value)
         .toList().reversed.where((element) => element.user.id == element.user.id && element.id != pickItem!.id ).toList();
@@ -340,7 +344,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                       ],
                     ),
                     SizedBox(height: 4,),
-                    ReviewsWidget(),
+                    ReviewsWidget(reviews: [], bookId: widget.productId),
                     SizedBox(height: 8,),
                     Text('Penjual', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
                         fontSize: responsiveValue.titleFontSize),),
