@@ -192,7 +192,7 @@ class RegisterPage extends StatefulWidget {
                     MaterialPageRoute(builder: (context) => LoginPage()),
                   );
                 },
-                child: Text('Create your account'),
+                child: Text('Login to your account'),
               ),
             ],
           ),
