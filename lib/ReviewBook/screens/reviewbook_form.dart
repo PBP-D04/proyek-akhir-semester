@@ -114,7 +114,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
         'book_id':selectedBook.id,
         'rating':_starRating,
         'content':_comment,
-        'photo': resImage,
+        'photo': resImage??'',
       'review_id': widget.reviewId
     };
     try {

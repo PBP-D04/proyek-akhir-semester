@@ -77,7 +77,7 @@ class ReviewItem extends ConsumerWidget {
           SizedBox(height: 8.0),
           Text(reviewText),
           SizedBox(height: 8.0),
-         if(photo != null) SizedBox(
+         if(photo != null && photo!.isNotEmpty) SizedBox(
            height: 120,
            child: ProductMiniImage(isSelected: false,function: (str){}, imageData: photo!,),
          )
