@@ -46,6 +46,9 @@ class _DiskusiState extends ConsumerState<Diskusi> {
         'content':text,
       }),
     );
+    setState(() {
+      controller.text = '';
+    });
     return 'Success';
   }
   @override
