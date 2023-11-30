@@ -32,8 +32,31 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
     }
    // print('apa sihhh..');
 
+    
 
     switch (event.eventName) {
+      case 'delete-review':
+        final data = event.data;
+        dynamic decodedData = jsonDecode(jsonEncode(data));
+        print(decodedData);
+        print('--------------------------------');
+        if(decodedData.runtimeType == String){
+          decodedData = jsonDecode(decodedData);
+        }
+        final message = decodedData['message'];
+        ref.read(reviewListProvider.notifier).removeReview(message);
+      case 'new-review':
+        print('cok cok');
+        print('ayo dong deck');
+        final data = event.data;
+        dynamic decodedData = jsonDecode(jsonEncode(data));
+        if(decodedData.runtimeType == String){
+          decodedData = jsonDecode(decodedData);
+        }
+        final message = decodedData['message'];
+        print(message);
+        ref.read(reviewListProvider.notifier).addOrUpdateReview(Review.fromJson(message));
+        break;
      case 'like-book':
 
         final data = event.data;
@@ -51,11 +74,7 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         ref.read(booksProvider.notifier).updateLikeStatus(bookId, isLiked, userId);
          // Update Book
         break;
-        case 'new-review':
-        final data = event.data;
-        dynamic decodedData = jsonDecode(jsonEncode(data));
-        final message = decodedData['message'];
-        ref.read(reviewListProvider.notifier).addReview(Review.fromJson(message));
+
       default:
         break;
     }

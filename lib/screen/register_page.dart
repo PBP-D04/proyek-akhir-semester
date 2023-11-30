@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:proyek_akhir_semester/api/api_config.dart';
+import 'package:proyek_akhir_semester/api/cloudinary._api.dart';
 import 'package:proyek_akhir_semester/screen/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
@@ -20,7 +23,7 @@ class RegisterPage extends StatefulWidget {
     TextEditingController _countryController = TextEditingController();
     TextEditingController _cityController = TextEditingController();
     TextEditingController _phoneNumberController = TextEditingController();
-    File? _profilePicture;
+    String? _profilePicture = '';
 
     Future<void> _register() async {
       const String apiUrl = BASE_URL + '/register-flutter/';
@@ -35,7 +38,7 @@ class RegisterPage extends StatefulWidget {
 
       final response = await http.post(
         Uri.parse(apiUrl),
-        body: {
+        body: json.encode({
           'username': username,
           'fullname': fullname,
           'password': password,
@@ -44,7 +47,8 @@ class RegisterPage extends StatefulWidget {
           'country': country,
           'city': city,
           'phone_number': phoneNumber,
-        },
+          'profile_picture': _profilePicture
+        }),
       );
 
       if (response.statusCode == 200) {
@@ -83,14 +87,21 @@ class RegisterPage extends StatefulWidget {
       }
     }
 
+
     Future<void> _pickProfilePicture() async {
       final picker = ImagePicker();
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
-
+      ;
       if (pickedFile != null) {
-        setState(() {
-          _profilePicture = File(pickedFile.path);
-        });
+        final file = File(pickedFile.path);
+
+        String? res =  await uploadImageToCloudinaryPublic(file);
+
+        if (pickedFile != null && res != null) {
+          setState(() {
+            _profilePicture = res;
+          });
+        }
       }
     }
 
@@ -103,83 +114,91 @@ class RegisterPage extends StatefulWidget {
         body: Padding(
           padding: EdgeInsets.all(16.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              SizedBox(height: 16.0),
-              GestureDetector(
-                onTap: _pickProfilePicture,
-                child: Container(
-                  width: 100.0,
-                  height: 100.0,
-                  decoration: BoxDecoration(
-                    color: Colors.grey,
-                    borderRadius: BorderRadius.circular(50.0),
-                  ),
-                  child: _profilePicture != null
-                      ? ClipRRect(
+              Expanded(child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 16.0),
+                    GestureDetector(
+                      onTap:(){
+                        _pickProfilePicture();
+                      } ,
+                      child: Container(
+                        width: 100.0,
+                        height: 100.0,
+                        decoration: BoxDecoration(
+                          color: Colors.grey,
                           borderRadius: BorderRadius.circular(50.0),
-                          child: Image.file(
-                            _profilePicture!,
+                        ),
+                        child: _profilePicture != null
+                            ? ClipRRect(
+                          borderRadius: BorderRadius.circular(50.0),
+                          child: Image.network(
+                            _profilePicture!.isNotEmpty? _profilePicture! : 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png',
                             fit: BoxFit.cover,
                           ),
                         )
-                      : Icon(
+                            : Icon(
                           Icons.camera_alt,
                           color: Colors.white,
                         ),
+                      ),
+                    ),
+                    TextField(
+                      controller: _usernameController,
+                      decoration: InputDecoration(
+                        labelText: 'Username',
+                      ),
+                    ),
+                    TextField(
+                      controller: _fullnameController,
+                      decoration: InputDecoration(
+                        labelText: 'Fullname',
+                      ),
+                    ),
+                    TextField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                      ),
+                      obscureText: true,
+                    ),
+                    TextField(
+                      controller: _passwordConfirmController,
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                      ),
+                      obscureText: true,
+                    ),
+                    TextField(
+                      controller: _ageController,
+                      decoration: InputDecoration(
+                        labelText: 'Age',
+                      ),
+                    ),
+                    TextField(
+                      controller: _countryController,
+                      decoration: InputDecoration(
+                        labelText: 'Country',
+                      ),
+                    ),
+                    TextField(
+                      controller: _cityController,
+                      decoration: InputDecoration(
+                        labelText: 'City',
+                      ),
+                    ),
+                    TextField(
+                      controller: _phoneNumberController,
+                      decoration: InputDecoration(
+                        labelText: 'Phone Number',
+                      ),
+                    ),
+                    SizedBox(height: 16.0),
+                  ],
                 ),
-              ),
-              TextField(
-                controller: _usernameController,
-                decoration: InputDecoration(
-                  labelText: 'Username',
-                ),
-              ),
-              TextField(
-                controller: _fullnameController,
-                decoration: InputDecoration(
-                  labelText: 'Fullname',
-                ),
-              ),
-              TextField(
-                controller: _passwordController,
-                decoration: InputDecoration(
-                  labelText: 'Password',
-                ),
-                obscureText: true,
-              ),
-              TextField(
-                controller: _passwordConfirmController,
-                decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                ),
-                obscureText: true,
-              ),
-              TextField(
-                controller: _ageController,
-                decoration: InputDecoration(
-                  labelText: 'Age',
-                ),
-              ),
-              TextField(
-                controller: _countryController,
-                decoration: InputDecoration(
-                  labelText: 'Country',
-                ),
-              ),
-              TextField(
-                controller: _cityController,
-                decoration: InputDecoration(
-                  labelText: 'City',
-                ),
-              ),
-              TextField(
-                controller: _phoneNumberController,
-                decoration: InputDecoration(
-                  labelText: 'Phone Number',
-                ),
-              ),
-              SizedBox(height: 16.0),
+              )),
               ElevatedButton(
                 onPressed: _register,
                 child: Text('Register'),
@@ -195,7 +214,7 @@ class RegisterPage extends StatefulWidget {
                 child: Text('Login to your account'),
               ),
             ],
-          ),
+          )
         ),
       );
     }

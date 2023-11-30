@@ -3,7 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
 import 'package:proyek_akhir_semester/DetailBook/widgets/expandable_text.dart';
 import 'package:proyek_akhir_semester/DetailBook/widgets/product_mini_image_container.dart';
-import 'package:proyek_akhir_semester/DetailBook/widgets/review_widget.dart';
+import 'package:proyek_akhir_semester/ReviewBook/screens/reviewbook_page.dart';
+import 'package:proyek_akhir_semester/ReviewBook/widgets/review_widget_spill.dart';
 import 'package:proyek_akhir_semester/Homepage/api/like_book.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/screens/search_page.dart';
@@ -36,14 +37,17 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
     final auth = ref.watch(authProvider);
     final items = ref.watch(booksProvider);
     final pickItem = items[productId];
-    List<Review> reviewList= ref.watch(reviewListProvider);
+    Map<int, Review> reviewMap= ref.watch(reviewListProvider);
+    final reviewList = reviewMap.entries
+        .map((entry) => entry.value)
+        .toList().reversed.toList();
     final selectedReviewList = reviewList.where((review) => review.bookId==widget.productId).toList();
     final anotherItems = items.entries
         .map((entry) => entry.value)
         .toList().reversed.where((element) => element.user.id == element.user.id && element.id != pickItem!.id ).toList();
     final anotherPickedItems = anotherItems.sublist(0, anotherItems.length < 6 ? anotherItems.length : 6);
 
-    double _carouselHeight = getScreenSize(context) == ScreenSize.small ?250 :
+    double carouselHeight = getScreenSize(context) == ScreenSize.small ?250 :
     getScreenSize(context) == ScreenSize.medium ? 280 :300;
 
     
@@ -51,11 +55,11 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
     // TODO: implement build
     return Scaffold(
       key: key,
-      extendBodyBehindAppBar: true,
+
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor:  Colors.white,
         actions: [
           SizedBox(width: 8,),
           Expanded(child: Row(
@@ -129,7 +133,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
 
             // Cek apakah Carousel sudah terscroll keluar layar
             setState(() {
-              _isColoredAppBar = pixels >= _carouselHeight;
+              _isColoredAppBar = pixels >= carouselHeight;
             });
           }
           return false;
@@ -339,12 +343,30 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                       children: [
                         Text('Review', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
                             fontSize: responsiveValue.titleFontSize),),
-                        Text('Show All', textAlign: TextAlign.left, style: TextStyle(color: Colors.black,
-                            fontSize: responsiveValue.subtitleFontSize),),
+                        TextButton(
+                          onPressed: () {
+                            // Tambahkan logika yang diperlukan ketika tombol ditekan
+                            Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                              return DaftarReview(bookId: widget.productId);
+                            }));
+                          },
+                          style: TextButton.styleFrom(
+                            padding: EdgeInsets.zero, // Ubah padding sesuai kebutuhan
+                          ),
+                          child: Text(
+                            'Show All',
+                            textAlign: TextAlign.left,
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: responsiveValue.subtitleFontSize,
+                            ),
+                          ),
+                        ),
+
                       ],
                     ),
                     SizedBox(height: 4,),
-                    ReviewsWidget(reviews: [], bookId: widget.productId),
+                    ReviewsWidget(reviews: selectedReviewList, bookId: widget.productId),
                     SizedBox(height: 8,),
                     Text('Penjual', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
                         fontSize: responsiveValue.titleFontSize),),
