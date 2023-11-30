@@ -6,7 +6,7 @@ class Review {
   final String content;
   final int rating;
   final String? photoUrl;
-  final String dateAdded;
+  final DateTime dateAdded;
 
   Review({
     required this.id,
@@ -19,14 +19,16 @@ class Review {
   });
 
   factory Review.fromJson(Map<String, dynamic> json) {
+    print('disini kah??');
+    print(json['id']);
     return Review(
       id: json['id'],
       user: User.fromJson(json['user']),
       bookId: json['book_id'],
       content: json['content'],
       rating: json['rating'],
-      photoUrl: json['photo_url'],
-      dateAdded: json['date_added'],
+      photoUrl: json['photo_url']??'',
+      dateAdded: DateTime.parse(json['date_added']),
     );
   }
 }

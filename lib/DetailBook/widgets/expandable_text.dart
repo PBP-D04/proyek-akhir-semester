@@ -15,7 +15,8 @@ class _ExpandableDescriptionState extends State<ExpandableDescription> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return  Container(
+      width: double.infinity,
       padding: EdgeInsets.all(16),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
@@ -24,19 +25,10 @@ class _ExpandableDescriptionState extends State<ExpandableDescription> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          AnimatedCrossFade(
-            firstChild: Text(
-              widget.text,
-              maxLines: null, // Remove maxLines when expanded
-              overflow: TextOverflow.fade,
-            ),
-            secondChild: Text(
-              widget.text,
-              maxLines: widget.maxLines,
-              overflow: TextOverflow.fade,
-            ),
-            crossFadeState: isExpanded ? CrossFadeState.showFirst : CrossFadeState.showSecond,
-            duration: Duration(milliseconds: 300),
+          Text(
+            widget.text,
+            maxLines: isExpanded ? null : widget.maxLines,
+
           ),
           if (widget.text.length > 0 &&
               widget.text.length > widget.maxLines * 20 &&

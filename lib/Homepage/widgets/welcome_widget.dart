@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:proyek_akhir_semester/models/responsive.dart';
+import 'package:proyek_akhir_semester/screen/register_page.dart';
 
 import '../../models/user.dart';
 import '../../util/responsive_config.dart';
@@ -55,14 +56,17 @@ class WelcomeWidget extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushReplacementNamed(context, '/login');
+                          Navigator.pushNamed(context, '/login');
                         },
                         child: Text('Login', style:  TextStyle(fontSize: responsiveValue.subtitleFontSize, color: Colors.white, ),),
                       ),
                       SizedBox(width: 10),
                       ElevatedButton(
                         onPressed: () {
-                          // Tambahkan logika untuk tombol register di sini
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => RegisterPage()), // Navigate to the register page
+                          );
                         },
                         child: Text('Register',style: TextStyle(fontSize: responsiveValue.subtitleFontSize, color: Colors.white, ),),
                       ),

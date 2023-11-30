@@ -1,6 +1,10 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
+import 'package:proyek_akhir_semester/ReviewBook/provider/review_provider.dart';
+import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 
@@ -30,8 +34,31 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
     }
    // print('apa sihhh..');
 
+    
 
     switch (event.eventName) {
+      case 'delete-review':
+        final data = event.data;
+        dynamic decodedData = jsonDecode(jsonEncode(data));
+        print(decodedData);
+        print('--------------------------------');
+        if(decodedData.runtimeType == String){
+          decodedData = jsonDecode(decodedData);
+        }
+        final message = decodedData['message'];
+        ref.read(reviewListProvider.notifier).removeReview(message);
+      case 'new-review':
+        print('cok cok');
+        print('ayo dong deck');
+        final data = event.data;
+        dynamic decodedData = jsonDecode(jsonEncode(data));
+        if(decodedData.runtimeType == String){
+          decodedData = jsonDecode(decodedData);
+        }
+        final message = decodedData['message'];
+        print(message);
+        ref.read(reviewListProvider.notifier).addOrUpdateReview(Review.fromJson(message));
+        break;
      case 'like-book':
 
         final data = event.data;
@@ -49,6 +76,18 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         ref.read(booksProvider.notifier).updateLikeStatus(bookId, isLiked, userId);
          // Update Book
         break;
+
+
+      case 'new-comment':
+        final data = event.data;
+        dynamic decodedData = jsonDecode(jsonEncode(data));
+        if(decodedData.runtimeType == String){ // Kalo di mobile ko bedaaa? Mengatasi hasil decode masih String
+          decodedData = jsonDecode(decodedData);
+        } //Mengatasi LinkedMap kalo di PC biar jadi Map<String, dynamic>
+        print('--------------------------------------');
+        Comment comment = Comment.fromJson(decodedData['message']);
+        ref.read(commentNotifierProvider.notifier).addComment(comment);
+
       default:
         break;
     }
