@@ -41,14 +41,12 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
   @override
   void initState(){
     super.initState();
-
+    WidgetsBinding.instance.addPostFrameCallback((_) async {
+      initEdit();
+    });
   }
 
-  @override
-  void didChangeDependencies(){
-    print('hello');
-    initEdit();
-  }
+
 
   Future<void> initEdit()async{
     if(widget.reviewId != null){
@@ -102,6 +100,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
       return 'FAILED';
     }
     print('semoga bisaaaaaaaaaaaa');
+    print(_comment);
     if(imageFile != null && imageData != null){
       resImage = await uploadImageToCloudinaryPublicFromByteData(imageData!);
     }
@@ -123,6 +122,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
           headers: {'Content-Type': 'application/json'},
           body: json.encode(data)
       );
+      print(response.body);
       print('aaaaaaaaaaaaaaaaakkkkkkk');
       return 'SUCCESS';
 

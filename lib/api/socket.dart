@@ -7,6 +7,8 @@ import 'package:proyek_akhir_semester/ReviewBook/provider/review_provider.dart';
 import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
+import '../Homepage/models/book.dart';
+
 
 /* PENTING:
 * layanan Pusher untuk realtime update di semua device yang terkoneksikan dengan app Bookphoria.
@@ -45,8 +47,19 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         if(decodedData.runtimeType == String){
           decodedData = jsonDecode(decodedData);
         }
+
         final message = decodedData['message'];
+        final reviewId = message;
+        Review? review = ref.watch(reviewListProvider)[reviewId];
         ref.read(reviewListProvider.notifier).removeReview(message);
+        if(review != null){
+          Book? book = ref.watch(booksProvider)[review.bookId];
+          if(book != null){
+            book.reviews.removeWhere((element) => element.id == reviewId);
+            ref.read(booksProvider.notifier).updateItem(book.id, book);
+          }
+        }
+        break;
       case 'new-review':
         print('cok cok');
         print('ayo dong deck');
@@ -57,7 +70,14 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         }
         final message = decodedData['message'];
         print(message);
-        ref.read(reviewListProvider.notifier).addOrUpdateReview(Review.fromJson(message));
+        Review review = Review.fromJson(message);
+        ref.read(reviewListProvider.notifier).addOrUpdateReview(review);
+        Book? book = ref.watch(booksProvider)[review.bookId];
+        if(book != null){
+          book.reviews.removeWhere((element) => element.id == review.id);
+          book.reviews.add(review);
+          ref.read(booksProvider.notifier).updateItem(book.id, book);
+        }
         break;
      case 'like-book':
 
