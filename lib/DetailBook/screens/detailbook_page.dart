@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/scheduler.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:proyek_akhir_semester/Dashboard/screens/another_dashboard.dart';
 import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
 import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart';
 import 'package:proyek_akhir_semester/DetailBook/screens/diskusi_page.dart';
@@ -21,8 +22,10 @@ import 'package:proyek_akhir_semester/api/api_config.dart';
 import 'package:proyek_akhir_semester/models/responsive.dart';
 import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
+import 'package:proyek_akhir_semester/screen/content_page.dart';
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
 import 'package:http/http.dart' as http;
+import 'package:proyek_akhir_semester/widgets/appbar.dart';
 import 'package:proyek_akhir_semester/widgets/drawer.dart';
 
 class ProductDetailPage extends ConsumerStatefulWidget{
@@ -35,7 +38,7 @@ class ProductDetailPage extends ConsumerStatefulWidget{
   }
 }
 class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
-  GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> key1 = GlobalKey<ScaffoldState>();
   final responsiveValue = ResponsiveValue();
   int _currentIndex = 0;
   CarouselController controller = CarouselController();
@@ -122,57 +125,11 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
     responsiveValue.setResponsive(context);
     // TODO: implement build
     return Scaffold(
-      key: key,
+      key: key1,
       drawer: MyDrawer(callBack: (identifier){
 
       },),
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        backgroundColor:  Colors.white,
-        actions: [
-          SizedBox(width: 8,),
-          Expanded(child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Bookphoria', style: TextStyle(fontWeight:FontWeight.bold, fontSize:  responsiveValue.extraTitleFontSize,color: Colors.indigoAccent.shade700),),
-             Flexible(child: Container(
-               alignment: Alignment.centerRight,
-               child: ConstrainedBox(
-                 constraints: BoxConstraints(maxWidth: getScreenSize(context) == ScreenSize.small ? 150 :
-                 getScreenSize(context) == ScreenSize.medium? 250 : 350 ) ,
-                 child:  Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                   crossAxisAlignment: CrossAxisAlignment.center,
-                   children: [
-                     IconButton(
-                       onPressed: () {
-                         print('object---------------');
-                         Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                           return SearchPage();
-                         }));
-                       },
-                       icon: Icon(Icons.search_rounded, color: Colors.black),
-                     ),
-                     IconButton(
-                       onPressed: () {},
-                       icon: Icon(Icons.favorite_outline_rounded, color: Colors.black),
-                     ),
-                     IconButton(
-                       onPressed: () {
-                         key.currentState?.openDrawer();
-                       },
-                       icon: Icon(Icons.menu_rounded, color: Colors.black),
-                     ),
-                   ],
-                 ),
-               )
-             ),)
-            ],
-          )),
-        ],
-      ),
+      appBar: MyAppBar(scaffoldKey: key1, title: 'Book Details',),
       bottomNavigationBar: BottomAppBar(
         child: Container(
           padding: EdgeInsets.all(16),
@@ -499,6 +456,16 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                                       children: [
                                         ElevatedButton(
                                           onPressed: () {
+                                            if(auth != null && pickItem!.user.id == auth.id ){
+                                               Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                                                 return ContentPage(currentIndex: 2,);
+                                               }));
+                                            }
+                                            else{
+                                              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                                                return AnotherDashboard(user: pickItem!.user);
+                                              }));
+                                            }
                                             // Tambahkan aksi yang ingin dilakukan saat tombol ditekan
                                           },
                                           style: ElevatedButton.styleFrom(
@@ -530,6 +497,17 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                                     ElevatedButton(
                                       onPressed: () {
                                         // Tambahkan aksi yang ingin dilakukan saat tombol ditekan
+                                        if(auth != null && pickItem!.user.id == auth.id ){
+                                          print('hello');
+                                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                                        return ContentPage(currentIndex: 2,);
+                                        }));
+                                        }
+                                        else{
+                                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+                                            return AnotherDashboard(user: pickItem!.user);
+                                          }));
+                                        }
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Colors.blue, // Warna latar belakang tombol

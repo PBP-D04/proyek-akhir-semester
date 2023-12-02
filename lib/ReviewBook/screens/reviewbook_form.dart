@@ -52,9 +52,11 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
     if(widget.reviewId != null){
       Review? review = ref.watch(reviewListProvider)[widget.reviewId];
       if(review != null){
-          _starRating = review.rating;
-          _comment = review.content;
-          isEditUlasan = true;
+          setState(() {
+            _starRating = review.rating;
+            _comment = review.content;
+            isEditUlasan = true;
+          });
         if(review.photoUrl != null){
           if(review.photoUrl!.trim().isNotEmpty){
             XFile? xfile = await xFileFromImageUrl(review.photoUrl!);
@@ -142,7 +144,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
       if (reviews[widget.reviewId] == null && this.isEditUlasan) {
         Navigator.of(context).pop();
       }
-      if(reviews[widget.reviewId] != null && !this.isEditUlasan){
+      else if(reviews[widget.reviewId] != null && !this.isEditUlasan){
         Navigator.of(context).pop();
       }
     });
