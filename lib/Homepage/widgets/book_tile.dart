@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:proyek_akhir_semester/DetailBook/screens/detailbook_page.dart';
 import 'package:proyek_akhir_semester/Homepage/widgets/rating.dart';
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
 
@@ -28,6 +29,9 @@ class BookListTile extends StatelessWidget {
         ],
       ),
       onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context){
+          return ProductDetailPage(productId: book.id);
+        }));
         // Tambahkan aksi ketika item dipilih
       },
     );

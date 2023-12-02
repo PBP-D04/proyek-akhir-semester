@@ -7,6 +7,9 @@ import 'package:proyek_akhir_semester/ReviewBook/provider/review_provider.dart';
 import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
+import '../Homepage/models/book.dart';
+import '../models/user.dart';
+
 
 /* PENTING:
 * layanan Pusher untuk realtime update di semua device yang terkoneksikan dengan app Bookphoria.
@@ -37,6 +40,29 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
     
 
     switch (event.eventName) {
+      case 'new-book':
+        final data = event.data;
+        dynamic decodedData = jsonDecode(jsonEncode(data));
+        if(decodedData.runtimeType == String){
+          decodedData = jsonDecode(decodedData);
+        }
+        final Map<int,Book> booksMap = ref.watch(booksProvider);
+        var message = decodedData['message'];
+        if(message.runtimeType == String){
+          message = jsonDecode(message);
+        }
+        User user = User.fromJson(message['user']);
+        // print(user);
+        Book book = Book.fromJson(message['book'], user);
+        //print(book);
+        for (var reviewData in message['review']) {
+          // print('HERE');
+          Review review = Review.fromJson(reviewData);
+          book.reviews.add(review);
+        }
+        booksMap[book.id] = book;
+        ref.read(booksProvider.notifier).addItem(book);
+        break;
       case 'delete-review':
         final data = event.data;
         dynamic decodedData = jsonDecode(jsonEncode(data));
@@ -45,8 +71,19 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         if(decodedData.runtimeType == String){
           decodedData = jsonDecode(decodedData);
         }
+
         final message = decodedData['message'];
+        final reviewId = message;
+        Review? review = ref.watch(reviewListProvider)[reviewId];
         ref.read(reviewListProvider.notifier).removeReview(message);
+        if(review != null){
+          Book? book = ref.watch(booksProvider)[review.bookId];
+          if(book != null){
+            book.reviews.removeWhere((element) => element.id == reviewId);
+            ref.read(booksProvider.notifier).updateItem(book.id, book);
+          }
+        }
+        break;
       case 'new-review':
         print('cok cok');
         print('ayo dong deck');
@@ -57,7 +94,14 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         }
         final message = decodedData['message'];
         print(message);
-        ref.read(reviewListProvider.notifier).addOrUpdateReview(Review.fromJson(message));
+        Review review = Review.fromJson(message);
+        ref.read(reviewListProvider.notifier).addOrUpdateReview(review);
+        Book? book = ref.watch(booksProvider)[review.bookId];
+        if(book != null){
+          book.reviews.removeWhere((element) => element.id == review.id);
+          book.reviews.add(review);
+          ref.read(booksProvider.notifier).updateItem(book.id, book);
+        }
         break;
      case 'like-book':
 
@@ -87,7 +131,20 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         print('--------------------------------------');
         Comment comment = Comment.fromJson(decodedData['message']);
         ref.read(commentNotifierProvider.notifier).addComment(comment);
+        break;
 
+      case 'delete-book':
+        final data = event.data;
+        dynamic decodedData = jsonDecode(jsonEncode(data));
+        if(decodedData.runtimeType == String){ // Kalo di mobile ko bedaaa? Mengatasi hasil decode masih String
+          decodedData = jsonDecode(decodedData);
+        }
+        Map<int,Book> books = ref.watch(booksProvider);
+        decodedData['message'].forEach((index){
+          books.remove(index);
+        });
+        ref.read(booksProvider.notifier).setItems(books);
+        break;
       default:
         break;
     }

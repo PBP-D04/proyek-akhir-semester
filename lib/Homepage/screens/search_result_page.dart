@@ -5,6 +5,7 @@ import 'package:proyek_akhir_semester/Homepage/models/sorting_type.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/categories_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/preference_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/screens/search_page.dart';
+import 'package:proyek_akhir_semester/Homepage/screens/wishlist_book_page.dart';
 import 'package:proyek_akhir_semester/Homepage/util/provider_helper.dart';
 import 'package:proyek_akhir_semester/Homepage/widgets/categories_list.dart';
 import 'package:proyek_akhir_semester/Homepage/widgets/preferences_bottom_sheet.dart';
@@ -13,6 +14,7 @@ import 'package:proyek_akhir_semester/Homepage/widgets/welcome_widget.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/widgets/book_card.dart';
+import 'package:proyek_akhir_semester/widgets/drawer.dart';
 import '../../models/responsive.dart';
 import '../../util/responsive_config.dart';
 import 'package:carousel_slider/carousel_slider.dart';
@@ -30,6 +32,7 @@ class SearchResultPage extends ConsumerStatefulWidget{
 }
 
 class _SearchResultPageState extends ConsumerState<SearchResultPage>{
+  GlobalKey<ScaffoldState> key1 = GlobalKey<ScaffoldState>();
   ResponsiveValue responsiveValue = ResponsiveValue();
   final SearchController _searchController = SearchController();
 
@@ -63,6 +66,9 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage>{
     bookList = bookList.where((book) => book.title.toLowerCase().contains(widget.searchText.toLowerCase())).toList();
 
     return Scaffold(
+      drawer: MyDrawer(callBack: (identifier){
+
+      },),
       appBar: AppBar(
         automaticallyImplyLeading: false,
         elevation: 0,
@@ -114,11 +120,17 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage>{
                   )),
                   if(getScreenSize(context) != ScreenSize.small)Spacer(),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context){
+                        return WishlistPage();
+                      }));
+                    },
                     icon: Icon(Icons.favorite_outline_rounded, color: Colors.black),
                   ),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      key1.currentState?.openDrawer();
+                    },
                     icon: Icon(Icons.menu_rounded, color: Colors.black),
                   ),
                 ],

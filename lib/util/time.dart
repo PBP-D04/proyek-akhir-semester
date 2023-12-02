@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 String formatTimeAgo(String isoString) {
-  final Duration offset = Duration(hours: 7);
-  final dateTime = DateTime.parse(isoString).add(offset);
+  final Duration offset = Duration(hours: -7);
+  final dateTime = DateTime.parse(isoString);
   final now = DateTime.now();
   final difference = now.difference(dateTime);
 
@@ -21,7 +21,7 @@ String formatTimeAgo(String isoString) {
 String formatTimeAgoDate(DateTime time) {
   print(time);
   final Duration offset = Duration(hours: 7);
-  final dateTime = time.add(offset);
+  final dateTime = time;
   final now = DateTime.now();
   final difference = now.difference(dateTime);
 

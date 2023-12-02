@@ -7,6 +7,7 @@ import 'package:proyek_akhir_semester/ReviewBook/widgets/reviewbook_widgets.dart
 import 'package:proyek_akhir_semester/models/responsive.dart';
 import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
+import 'package:proyek_akhir_semester/widgets/appbar.dart';
 
 class DaftarReview extends ConsumerStatefulWidget {
   int bookId;
@@ -17,7 +18,7 @@ class DaftarReview extends ConsumerStatefulWidget {
 }
 
 class _MyWidgetState extends ConsumerState<DaftarReview> {
-  GlobalKey<ScaffoldState> key = GlobalKey<ScaffoldState>();
+  GlobalKey<ScaffoldState> key1 = GlobalKey<ScaffoldState>();
   final responsiveValue = ResponsiveValue();
   @override
   Widget build(BuildContext context) {
@@ -31,52 +32,9 @@ class _MyWidgetState extends ConsumerState<DaftarReview> {
     print(selectedList.length);
     responsiveValue.setResponsive(context);
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        elevation: 0,
-        backgroundColor: Colors.white,
-        actions: [
-          SizedBox(width: 8,),
-          Expanded(child: Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text('Daftar Review', style: TextStyle(fontWeight:FontWeight.bold, fontSize:  responsiveValue.extraTitleFontSize,color: Colors.indigoAccent.shade700),),
-             Flexible(child: Container(
-               alignment: Alignment.centerRight,
-               child: ConstrainedBox(
-                 constraints: BoxConstraints(maxWidth: getScreenSize(context) == ScreenSize.small ? 150 :
-                 getScreenSize(context) == ScreenSize.medium? 250 : 350 ) ,
-                 child:  Row(
-                   mainAxisAlignment: MainAxisAlignment.spaceAround,
-                   crossAxisAlignment: CrossAxisAlignment.center,
-                   children: [
-                     IconButton(
-                       onPressed: () {
-                         print('object---------------');
-                         Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                           return SearchPage();
-                         }));
-                       },
-                       icon: Icon(Icons.search_rounded, color: Colors.black),
-                     ),
-                     IconButton(
-                       onPressed: () {},
-                       icon: Icon(Icons.favorite_outline_rounded, color: Colors.black),
-                     ),
-                     IconButton(
-                       onPressed: () {
-                         key.currentState?.openDrawer();
-                       },
-                       icon: Icon(Icons.menu_rounded, color: Colors.black),
-                     ),
-                   ],
-                 ),
-               )
-             ),)
-            ],
-          )),
-        ],
+      appBar: MyAppBar(
+        scaffoldKey: key1,
+        title: 'Reviews List',
       ),
     body:Padding(
       padding: EdgeInsets.all(12),

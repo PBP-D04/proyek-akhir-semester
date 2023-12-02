@@ -16,7 +16,8 @@ List<SearchSuggestion> createSuggestions (List<Book> books, List<History> histor
     history.map((hist) => SearchSuggestion(
         isHistory: true,
         text: hist.text,
-        historyId: hist.historyId
+        historyId: hist.historyId,
+      bookId: null
     )),
   );
   // Menambahkan buku ke dalam daftar saran
@@ -24,7 +25,8 @@ List<SearchSuggestion> createSuggestions (List<Book> books, List<History> histor
     books.map((book) => SearchSuggestion(
       isHistory: false,
       text: book.title,
-      historyId: null
+      historyId: null,
+      bookId: book.id
     )),
   );
 

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proyek_akhir_semester/DetailBook/screens/detailbook_page.dart';
 import 'package:proyek_akhir_semester/Homepage/api/update_history.dart';
 import 'package:proyek_akhir_semester/Homepage/models/history.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/search_history_provider.dart';
@@ -34,6 +35,9 @@ class SearchSuggestionWidget extends ConsumerWidget {
           ref.read(historyProvider.notifier).addHistorywithObject(history);
           addHistory(ref, history);
           //todo: implement ke page detail book untuk buku tersebut
+          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context){
+            return ProductDetailPage(productId: searchSuggestion.bookId!);
+          }));
         }
       },
       trailing: searchSuggestion.isHistory ? IconButton(icon: Icon(Icons.close_rounded),onPressed: () async {
