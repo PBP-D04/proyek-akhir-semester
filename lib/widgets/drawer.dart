@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proyek_akhir_semester/Account/screens/login_page.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
 class MyDrawer extends ConsumerStatefulWidget{
@@ -86,7 +87,7 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        // Tambahkan aksi yang ingin dilakukan saat tombol ditekan
+                        Navigator.pushNamed(context, '/profile');
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol
@@ -139,7 +140,10 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/login');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => LoginPage()), // Navigate to the register page
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol
@@ -220,7 +224,7 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
               children: [
                 Flexible(child: ListTile(
                   leading: Icon(Icons.settings), // Ikon untuk halaman utama
-                  title: Text('Setting', style: TextStyle(fontSize: responsiveValue.subtitleFontSize),),
+                  title: Text('Settings', style: TextStyle(fontSize: responsiveValue.subtitleFontSize),),
                   onTap: () {
                     // Tindakan ketika ListTile Halaman Utama diklik
                     // Misalnya: Navigasi ke halaman utama

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:proyek_akhir_semester/Account/screens/login_page.dart';
 import 'package:proyek_akhir_semester/models/responsive.dart';
-import 'package:proyek_akhir_semester/screen/register_page.dart';
+import 'package:proyek_akhir_semester/Account/screens/register_page.dart';
 
 import '../../models/user.dart';
 import '../../util/responsive_config.dart';
@@ -56,7 +57,10 @@ class WelcomeWidget extends StatelessWidget {
                     children: [
                       ElevatedButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/login');
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => LoginPage()), // Navigate to the register page
+                          );
                         },
                         child: Text('Login', style:  TextStyle(fontSize: responsiveValue.subtitleFontSize, color: Colors.white, ),),
                       ),

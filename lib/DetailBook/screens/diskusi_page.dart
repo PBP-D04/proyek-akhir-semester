@@ -3,6 +3,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proyek_akhir_semester/Account/screens/login_page.dart';
 import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
 import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart';
 import 'package:proyek_akhir_semester/DetailBook/widgets/comment_item.dart';
@@ -76,7 +77,10 @@ class _DiskusiState extends ConsumerState<Diskusi> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/login');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => LoginPage()), // Navigate to the register page
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol

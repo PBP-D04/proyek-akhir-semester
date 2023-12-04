@@ -8,9 +8,9 @@ import 'dart:convert';
 
 import 'package:proyek_akhir_semester/api/api_config.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
-import 'package:proyek_akhir_semester/screen/register_page.dart';
+import 'package:proyek_akhir_semester/Account/screens/register_page.dart';
 
-import '../models/user.dart';
+import '../../models/user.dart';
 
 class LoginPage extends ConsumerStatefulWidget {
   @override

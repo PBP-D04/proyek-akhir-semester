@@ -7,7 +7,7 @@ import 'package:http/http.dart' as http;
 import 'package:image_picker/image_picker.dart';
 import 'package:proyek_akhir_semester/api/api_config.dart';
 import 'package:proyek_akhir_semester/api/cloudinary._api.dart';
-import 'package:proyek_akhir_semester/screen/login_page.dart';
+import 'package:proyek_akhir_semester/Account/screens/login_page.dart';
 
 class RegisterPage extends StatefulWidget {
   @override
