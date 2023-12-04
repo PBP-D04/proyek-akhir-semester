@@ -1,0 +1,282 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:proyek_akhir_semester/Account/api/update_profile.dart';
+import 'package:proyek_akhir_semester/util/responsive_config.dart';
+import 'package:proyek_akhir_semester/widgets/appbar.dart';
+import 'package:proyek_akhir_semester/widgets/drawer.dart';
+
+import '../../models/user.dart';
+
+class ProfilePage extends ConsumerStatefulWidget {
+  User user;
+  ProfilePage({required this.user});
+  @override
+  _ProfilePageState createState() {
+    return _ProfilePageState();
+  }
+}
+
+class _ProfilePageState extends ConsumerState<ProfilePage> {
+  GlobalKey<ScaffoldState> key1 = GlobalKey<ScaffoldState>();
+  ResponsiveValue responsiveValue = ResponsiveValue();
+  bool _isEditing = false;
+  TextEditingController _nameController = TextEditingController();
+  TextEditingController _fullnameController = TextEditingController();
+  TextEditingController _countryController = TextEditingController();
+  TextEditingController _cityController = TextEditingController();
+  TextEditingController _ageController = TextEditingController();
+  TextEditingController _phoneNumberController = TextEditingController();
+  TextEditingController _passwordController = TextEditingController(); // Add password controller
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.text = widget.user.fullname;
+    _fullnameController.text = widget.user.fullname;
+    _countryController.text = widget.user.country;
+    _cityController.text = widget.user.city;
+    _ageController.text = widget.user.age.toString();
+    _phoneNumberController.text = widget.user.phoneNumber;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _fullnameController.dispose();
+    _countryController.dispose();
+    _cityController.dispose();
+    _ageController.dispose();
+    _phoneNumberController.dispose();
+    _passwordController.dispose(); // Dispose password controller
+    super.dispose();
+  }
+
+  void _toggleEdit() {
+    setState(() {
+      _isEditing = !_isEditing;
+    });
+  }
+
+  void _saveChanges() async {
+    String newName = _nameController.text;
+    String newFullname = _fullnameController.text;
+    String newCountry = _countryController.text;
+    String newCity = _cityController.text;
+    int newAge = int.parse(_ageController.text);
+    String newPhoneNumber = _phoneNumberController.text;
+    String password = _passwordController.text; // Get password from controller
+
+    // Create a JSON payload with the updated profile data
+    Map<String, dynamic> payload = {
+      'name': newName,
+      'fullname': newFullname,
+      'country': newCountry,
+      'city': newCity,
+      'age': newAge,
+      'phoneNumber': newPhoneNumber,
+      'password': password, // Add password to payload
+    };
+
+    // Send a POST request to the API endpoint
+    final response = await updateProfile(payload);
+
+    if (response == 'SUCCESS') {
+      // Profile updated successfully
+      void _showDialog() {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Profile Updated'),
+              content: Text('Your profile has been successfully updated.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+      }
+    } else {
+      // Error occurred while updating profile
+      void _showDialog() {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Failed to Update Profile'),
+              content: Text('There was an error while updating your profile.'),
+              actions: [
+                TextButton(
+                  child: Text('OK'),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                ),
+              ],
+            );
+          },
+        );
+        _nameController.text = widget.user.fullname;
+        _fullnameController.text = widget.user.fullname;
+        _countryController.text = widget.user.country;
+        _cityController.text = widget.user.city;
+        _ageController.text = widget.user.age.toString();
+        _phoneNumberController.text = widget.user.phoneNumber;
+      }
+    }
+
+    // Disable editing mode after saving changes
+    _toggleEdit();
+  }
+  
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      drawer: MyDrawer(
+          callBack: (identifier){}
+      ),
+      appBar: MyAppBar(scaffoldKey: key1, title: 'Profile',),
+      body: Stack(
+        children: [
+          Padding(
+            padding: EdgeInsets.all(16.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Name",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  controller: _nameController,
+                  enabled: _isEditing,
+                  decoration: InputDecoration(
+                    hintText: "Enter your name",
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                Text(
+                  "Full Name",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  controller: _fullnameController,
+                  enabled: _isEditing,
+                  decoration: InputDecoration(
+                    hintText: "Enter your full name",
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                Text(
+                  "Country",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  controller: _countryController,
+                  enabled: _isEditing,
+                  decoration: InputDecoration(
+                    hintText: "Enter your country",
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                Text(
+                  "City",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  controller: _cityController,
+                  enabled: _isEditing,
+                  decoration: InputDecoration(
+                    hintText: "Enter your city",
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                Text(
+                  "Age",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  controller: _ageController,
+                  enabled: _isEditing,
+                  keyboardType: TextInputType.number,
+                  decoration: InputDecoration(
+                    hintText: "Enter your age",
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                Text(
+                  "Phone Number",
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16.0,
+                  ),
+                ),
+                SizedBox(height: 8.0),
+                TextFormField(
+                  controller: _phoneNumberController,
+                  enabled: _isEditing,
+                  keyboardType: TextInputType.phone,
+                  decoration: InputDecoration(
+                    hintText: "Enter your phone number",
+                  ),
+                ),
+                if (_isEditing) ...[
+                  SizedBox(height: 16.0),
+                  Text(
+                    "Password", // Add password field
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  TextFormField(
+                    controller: _passwordController,
+                    enabled: _isEditing,
+                    obscureText: true, // Hide password text
+                    decoration: InputDecoration(
+                      hintText: "Enter your password",
+                    ),
+                  ),
+                ],
+              ],
+            ),
+          ),
+          Positioned(
+            bottom: 16.0,
+            right: 16.0,
+            child: FloatingActionButton(
+              onPressed: _isEditing ? _saveChanges : _toggleEdit,
+              child: Icon(_isEditing ? Icons.save : Icons.edit),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}

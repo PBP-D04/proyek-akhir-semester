@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyek_akhir_semester/Account/screens/login_page.dart';
+import 'package:proyek_akhir_semester/Account/screens/register_page.dart';
 import 'package:proyek_akhir_semester/Dashboard/api/delete_book.dart';
 import 'package:proyek_akhir_semester/Dashboard/models/current_activity_model.dart';
 import 'package:proyek_akhir_semester/Dashboard/screens/add_book_page.dart';
@@ -123,7 +124,10 @@ class _DashboardState extends ConsumerState<Dashboard> with TickerProviderStateM
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pushNamed(context, '/register');
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => RegisterPage()), // Navigate to the register page
+                    );
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol

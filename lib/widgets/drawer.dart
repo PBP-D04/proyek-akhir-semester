@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyek_akhir_semester/Account/screens/login_page.dart';
+import 'package:proyek_akhir_semester/Account/screens/profile_page.dart';
+import 'package:proyek_akhir_semester/Account/screens/register_page.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
 class MyDrawer extends ConsumerStatefulWidget{
@@ -87,7 +89,10 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/profile');
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => ProfilePage(user: userData,)), // Navigate to the register page
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol
@@ -163,7 +168,10 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                     ),
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.pushNamed(context, '/register');
+                        Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => RegisterPage()), // Navigate to the register page
+                      );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol
