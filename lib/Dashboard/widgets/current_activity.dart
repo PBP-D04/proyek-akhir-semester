@@ -24,18 +24,18 @@ class CurrentActivityWidget extends ConsumerWidget{
     Map<int, Book> books = ref.watch(booksProvider);
     if (currentActivity.data.runtimeType == Review) {
       // Jika tipe data adalah Review
-      Review reviewData = currentActivity.data;
+      Review dataReview = currentActivity.data;
       String subtitleText =
-      reviewData.content.trim().isEmpty ? "Tidak ada komentar" : reviewData.content;
-      // Lakukan sesuatu dengan reviewData
-      return books[reviewData.bookId] != null?Container(
+      dataReview.content.trim().isEmpty ? "Tidak ada komentar" : dataReview.content;
+      // Lakukan sesuatu dengan dataReview
+      return books[dataReview.bookId] != null?Container(
         child: Column(
           children: [
-            if(books[reviewData.bookId] != null)BookListTile(book: books[reviewData.bookId]!),
+            if(books[dataReview.bookId] != null)BookListTile(book: books[dataReview.bookId]!),
             ListTile(
               title: Text('${currentUser == null ? currentActivity.user.username : currentUser!.id != currentActivity.user.id ? currentActivity.user.username: 'Anda'} memberikan review', style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),),
               subtitle: Text(subtitleText, style: TextStyle(color: Colors.black)),
-              trailing: Text(formatTimeAgoDate(reviewData.dateAdded), style: TextStyle(color: Colors.black)),
+              trailing: Text(formatTimeAgoDate(dataReview.dateAdded), style: TextStyle(color: Colors.black)),
             )
           ],
         ),

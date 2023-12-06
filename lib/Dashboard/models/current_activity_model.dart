@@ -12,8 +12,8 @@ class CurrentActivity {
 
   CurrentActivity({required this.data, required this.user}) {
     if (data.runtimeType == Review) {
-      Review reviewData = data;
-      time = reviewData.dateAdded;
+      Review dataReview = data;
+      time = dataReview.dateAdded;
     } else if (data.runtimeType == History) {
       History historyData = data;
       time = historyData.time;

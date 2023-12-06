@@ -55,9 +55,9 @@ Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
         // print(user);
         Book book = Book.fromJson(message['book'], user);
         //print(book);
-        for (var reviewData in message['review']) {
+        for (var dataReview in message['review']) {
           // print('HERE');
-          Review review = Review.fromJson(reviewData);
+          Review review = Review.fromJson(dataReview);
           book.reviews.add(review);
         }
         booksMap[book.id] = book;
