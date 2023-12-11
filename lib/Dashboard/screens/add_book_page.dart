@@ -24,7 +24,6 @@ class AddBookPage extends ConsumerStatefulWidget{
 
   @override
   ConsumerState<ConsumerStatefulWidget> createState() {
-    // TODO: implement createState
     return _AddBookPageState();
   }
 }
@@ -75,7 +74,6 @@ class _AddBookPageState extends ConsumerState<AddBookPage>{
   }
 
   Future<void> initEdit() async{
-    print('sasukeeeeeeeeeeeeeeee..............');
     print(widget.bookId);
     if(widget.bookId != null){
       print('Holy Molly');
@@ -83,7 +81,7 @@ class _AddBookPageState extends ConsumerState<AddBookPage>{
       if(book == null){
         return;
       }
-      print('chidoriiiiii!!!!!!');
+
       final newProductCategories = {...productCategories};
       for(var category in book.categories){
         if(newProductCategories[category] != null){
@@ -129,12 +127,12 @@ class _AddBookPageState extends ConsumerState<AddBookPage>{
     List<Map<String,dynamic>> selectedCategoryData = productCategories.values.where((element) => element['isSelected'] == true).toList();
     List<String> category = selectedCategoryData.map((e) => e['stringValue'].toString()).toList();
     if(category.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Maaf minimal harus ada satu kategori yang terpilih'), backgroundColor: Colors.red,));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mohon isi minimal 1 kategori buku Anda'), backgroundColor: Colors.red,));
       return;
     }
 
     if(productsImage.isEmpty){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Maaf minimal harus ada satu gambar yang terpilih'), backgroundColor: Colors.red,));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Mohon pilih 1 gambar untuk buku Anda'), backgroundColor: Colors.red,));
       return;
     }
     if(titleController.text.trim().isEmpty){
@@ -238,7 +236,7 @@ class _AddBookPageState extends ConsumerState<AddBookPage>{
                           ),
                           validator: (value) {
                             if (value!.isEmpty) {
-                              return 'Judul Buku tidak boleh kosong';
+                              return 'Mohon isi judul buku anda';
                             }
                             return null;
                           },
@@ -458,7 +456,7 @@ class _AddBookPageState extends ConsumerState<AddBookPage>{
                               alignment: WrapAlignment.spaceBetween,
                               crossAxisAlignment: WrapCrossAlignment.center,
                               children: [
-                                Text('Apakah Anda ingin Menjualnya?', style:TextStyle(color: Colors.grey)),
+                                Text('Apakah Anda ingin menjualnya?', style:TextStyle(color: Colors.grey)),
                                 Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [

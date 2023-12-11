@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 class AddAuthorScreen extends StatelessWidget {
   final List<String> authors;
   final Function(String) onAddAuthor;
@@ -20,7 +21,6 @@ class AddAuthorScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -64,28 +64,29 @@ class AddAuthorScreen extends StatelessWidget {
             ],
           ),
           SizedBox(height: 20),
-          if(authors.isNotEmpty)Text(
-            'List Author:',
-            style: TextStyle(
-             color: Colors.black,
+          if (authors.isNotEmpty)
+            Text(
+              'List Author:',
+              style: TextStyle(
+                color: Colors.black,
+              ),
             ),
-          ),
           SizedBox(height: 10),
           ListView.builder(
-              itemCount: authors.length,
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(authors[index], style: TextStyle(color: Colors.black),),
-                  trailing: IconButton(
-                    icon: Icon(Icons.delete),
-                    onPressed: () {
-                      onRemoveAuthor(index);
-                    },
-                  ),
-                );
-              },
-            ),
+            itemCount: authors.length,
+            shrinkWrap: true,
+            itemBuilder: (context, index) {
+              return ListTile(
+                title: Text(authors[index], style: TextStyle(color: Colors.black)),
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  onPressed: () {
+                    onRemoveAuthor(index);
+                  },
+                ),
+              );
+            },
+          ),
         ],
       ),
     );

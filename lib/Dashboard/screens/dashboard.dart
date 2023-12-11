@@ -22,23 +22,20 @@ import '../../models/review.dart';
 class Dashboard extends ConsumerStatefulWidget{
   @override
   _DashboardState createState() {
-    // TODO: implement createState
     return _DashboardState();
   }
 }
 class _DashboardState extends ConsumerState<Dashboard> with TickerProviderStateMixin{
-
-
   late TabController _tabController;
   int _activeTabIndex = 0;
   ResponsiveValue responsiveValue = ResponsiveValue();
-  Map<int,int> bookswantToEditOrDelete = {};
+  Map<int,int> booksToEditOrDelete = {};
 
   Future<void> submitDelete() async {
-    final res = await deleteBook(bookswantToEditOrDelete);
+    final res = await deleteBook(booksToEditOrDelete);
     if(res == 'SUCCESS'){
       setState(() {
-        bookswantToEditOrDelete = {};
+        booksToEditOrDelete = {};
       });
     }
   }
@@ -155,7 +152,6 @@ class _DashboardState extends ConsumerState<Dashboard> with TickerProviderStateM
     List<CurrentActivity> activities = [...myReview, ...myComment, ...histories ].map((e) => CurrentActivity(data: e, user:  user!)).toList();
     activities.sort((a,b)=>b.time.compareTo(a.time));
 
-    // TODO: implement build
     return CustomScrollView(
       slivers: <Widget>[
         SliverToBoxAdapter(
@@ -417,16 +413,16 @@ class _DashboardState extends ConsumerState<Dashboard> with TickerProviderStateM
                                     mainAxisSize: MainAxisSize.min,
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
-                                      if(bookswantToEditOrDelete.length == 1)ElevatedButton(
+                                      if(booksToEditOrDelete.length == 1)ElevatedButton(
                                         onPressed: () {
                                           //Navigator.of(context).pushNamed('/add-product');
                                           Navigator.of(context).push(MaterialPageRoute(builder: (context){
-                                            if(bookswantToEditOrDelete.isEmpty){
+                                            if(booksToEditOrDelete.isEmpty){
                                               return AddBookPage();
                                             }
                                             print('omaiwa');
                                             print('rasengan...................');
-                                            return AddBookPage(bookId: bookswantToEditOrDelete.values.elementAt(0),);
+                                            return AddBookPage(bookId: booksToEditOrDelete.values.elementAt(0),);
                                           }));
 
                                           // Tambahkan aksi yang ingin dilakukan saat tombol "Tambah" ditekan
@@ -440,7 +436,7 @@ class _DashboardState extends ConsumerState<Dashboard> with TickerProviderStateM
                                           ),
                                         ),
                                         child: Text(
-                                          bookswantToEditOrDelete.isEmpty?'Tambah Buku':'Edit Buku',
+                                          booksToEditOrDelete.isEmpty?'Tambah Buku':'Edit Buku',
                                           style: TextStyle(
                                             fontSize: responsiveValue.subtitleFontSize, // Ukuran teks
                                             color: Colors.white, // Warna teks
@@ -451,7 +447,7 @@ class _DashboardState extends ConsumerState<Dashboard> with TickerProviderStateM
                                       SizedBox(
                                         width: 8,
                                       ),
-                                      if(bookswantToEditOrDelete.isNotEmpty)
+                                      if(booksToEditOrDelete.isNotEmpty)
                                         ElevatedButton(
                                           onPressed: () {
                                             // Navigator.of(context).pushNamed('/all-your-products');
@@ -502,11 +498,11 @@ class _DashboardState extends ConsumerState<Dashboard> with TickerProviderStateM
                                  Positioned(child: IconButton(
                                    onPressed: (){
                                      setState(() {
-                                       bookswantToEditOrDelete.containsKey(book.id) ? bookswantToEditOrDelete.remove(book.id):
-                                       bookswantToEditOrDelete[book.id] = book.id;
+                                       booksToEditOrDelete.containsKey(book.id) ? booksToEditOrDelete.remove(book.id):
+                                       booksToEditOrDelete[book.id] = book.id;
                                      });
                                    },
-                                   icon: Icon(bookswantToEditOrDelete.containsKey(book.id)? Icons.check_box : Icons.check_box_outline_blank, color: Colors.white,),
+                                   icon: Icon(booksToEditOrDelete.containsKey(book.id)? Icons.check_box : Icons.check_box_outline_blank, color: Colors.white,),
                                  ))
                                ],
                              );

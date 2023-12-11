@@ -12,16 +12,15 @@ class CurrentActivity {
 
   CurrentActivity({required this.data, required this.user}) {
     if (data.runtimeType == Review) {
-      Review reviewData = data;
-      time = reviewData.dateAdded;
+      Review dataReview = data;
+      time = dataReview.dateAdded;
     } else if (data.runtimeType == History) {
       History historyData = data;
       time = historyData.time;
-    } else if( data.runtimeType == Comment){
+    } else if (data.runtimeType == Comment) {
       Comment comment = data;
       time = comment.createdAt;
-    }
-    else {
+    } else {
       // Default value or handling for other types
       time = DateTime.now(); // Contoh: Defaultnya DateTime.now()
     }
