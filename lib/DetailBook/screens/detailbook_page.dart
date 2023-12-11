@@ -27,6 +27,8 @@ import 'package:proyek_akhir_semester/util/responsive_config.dart';
 import 'package:http/http.dart' as http;
 import 'package:proyek_akhir_semester/widgets/appbar.dart';
 import 'package:proyek_akhir_semester/widgets/drawer.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class ProductDetailPage extends ConsumerStatefulWidget{
   final int productId;
@@ -327,26 +329,91 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                       ,
                     );
                   }),
-                  SizedBox(height: 8,),
-                  Text('Deskripsi', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                  
+                  SizedBox(height: 4,),
+                  Text('Author', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
                       fontSize: responsiveValue.titleFontSize),),
                   SizedBox(height: 4,),
-                  ExpandableDescription(text: pickItem!.description == null? 'Tidak ada deskripsi':pickItem!.description!.trim().isEmpty? 'Tidak ada deskripsi': pickItem!.description!
-                    , maxLines: 5,),
+                  ExpandableDescription(
+                    text: pickItem!.authors == null
+                      ? '-'
+                      : pickItem!.authors is String
+                        ? pickItem!.authors as String
+                        : (pickItem!.authors as List<dynamic>).join(', '),
+                    maxLines: 5,
+                  ),
+
                   SizedBox(height: 8,),
                   Text('Kategori', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
                       fontSize: responsiveValue.titleFontSize),),
+
                   SizedBox(height: 4,),
-                  Wrap(
-                    alignment: WrapAlignment.start,
-                    spacing: 4,
-                    runSpacing: 6,
-                    children: [
-                      ...pickItem!.categories.cast<String>().map((kategori){
-                        return ElevatedButton(onPressed: (){}, child: Text('$kategori'));
-                      }).toList()
-                    ],
+                  ExpandableDescription(
+                    text: pickItem!.categories == null || pickItem!.categories!.isEmpty
+                      ? '-'
+                      : pickItem!.categories is String
+                        ? pickItem!.categories as String
+                        : (pickItem!.categories as List<dynamic>).join(', '),
+                    maxLines: 5,
                   ),
+          
+                  SizedBox(height: 4,),
+                  Text('Publisher', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                      fontSize: responsiveValue.titleFontSize),),
+                  SizedBox(height: 4,),
+                  ExpandableDescription(text: pickItem!.publisher == null? '-':pickItem!.publisher!.trim().isEmpty? 'Tidak ada publisher': pickItem!.publisher!
+                    , maxLines: 5,),
+
+                  SizedBox(height: 4,),
+                  Text('Language', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                      fontSize: responsiveValue.titleFontSize),),
+                  SizedBox(height: 4,),
+                  ExpandableDescription(text: pickItem!.language == null? '-':pickItem!.language!.trim().isEmpty? 'Tidak ada language': pickItem!.language!
+                    , maxLines: 5,),
+
+                  SizedBox(height: 4,),
+                  Text('Pages', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                      fontSize: responsiveValue.titleFontSize),),
+                  SizedBox(height: 4,),
+                  ExpandableDescription(
+                    text: pickItem!.pageCount == null
+                      ? '-'
+                      : pickItem!.pageCount.toString(),
+                    maxLines: 5,
+                  ),
+
+                  SizedBox(height: 4,),
+                  Text('Published Date', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                      fontSize: responsiveValue.titleFontSize),),
+                  SizedBox(height: 4,),
+                  ExpandableDescription(text: pickItem!.publishedDate == null? '-':pickItem!.publishedDate!.trim().isEmpty? 'Tidak ada published date': pickItem!.publishedDate!
+                    , maxLines: 5,),
+
+                  SizedBox(height: 4),
+                  if (pickItem?.pdfLink != null && pickItem!.pdfLink!.isNotEmpty)
+                    ElevatedButton(
+                      onPressed: () {
+                        launchPdfLink(pickItem!.pdfLink!);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.indigoAccent.shade400
+                      ),
+                      child: Text(
+                        'Download E-Book',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: responsiveValue.titleFontSize,
+                        ),
+                      ),
+                    )
+                  else
+                    Text(
+                      'E-Book not available for download.',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: responsiveValue.titleFontSize,
+                      ),
+                    ),
 
                   SizedBox(height: 8,),
                   Row(
@@ -357,13 +424,12 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                           fontSize: responsiveValue.titleFontSize),),
                       TextButton(
                         onPressed: () {
-                          // Tambahkan logika yang diperlukan ketika tombol ditekan
                           Navigator.of(context).push(MaterialPageRoute(builder: (context){
                             return DaftarReview(bookId: widget.productId);
                           }));
                         },
                         style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero, // Ubah padding sesuai kebutuhan
+                          padding: EdgeInsets.zero,
                         ),
                         child: Text(
                           'Show All',
@@ -377,6 +443,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
 
                     ],
                   ),
+    
                   SizedBox(height: 4,),
                   ReviewsWidget(reviews: selectedReviewList, bookId: widget.productId),
                   SizedBox(height: 8,),
@@ -572,5 +639,13 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
         ],
       ),
     );
+  }
+  
+  void launchPdfLink(String pdfLink) async {
+      if (await canLaunch(pdfLink)) {
+        await launch(pdfLink);
+      } else {
+        throw 'Could not launch $pdfLink';
+      }
   }
 }

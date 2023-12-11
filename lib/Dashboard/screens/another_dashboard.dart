@@ -38,13 +38,13 @@ class _DashboardState extends ConsumerState<AnotherDashboard> with TickerProvide
   late TabController _tabController;
   int _activeTabIndex = 0;
   ResponsiveValue responsiveValue = ResponsiveValue();
-  Map<int,int> bookswantToEditOrDelete = {};
+  Map<int,int> booksToEditOrDelete = {};
 
   Future<void> submitDelete() async {
-    final res = await deleteBook(bookswantToEditOrDelete);
+    final res = await deleteBook(booksToEditOrDelete);
     if(res == 'SUCCESS'){
       setState(() {
-        bookswantToEditOrDelete = {};
+        booksToEditOrDelete = {};
       });
     }
   }
@@ -353,11 +353,11 @@ class _DashboardState extends ConsumerState<AnotherDashboard> with TickerProvide
                                   Positioned(child: IconButton(
                                     onPressed: (){
                                       setState(() {
-                                        bookswantToEditOrDelete.containsKey(book.id) ? bookswantToEditOrDelete.remove(book.id):
-                                        bookswantToEditOrDelete[book.id] = book.id;
+                                        booksToEditOrDelete.containsKey(book.id) ? booksToEditOrDelete.remove(book.id):
+                                        booksToEditOrDelete[book.id] = book.id;
                                       });
                                     },
-                                    icon: Icon(bookswantToEditOrDelete.containsKey(book.id)? Icons.check_box : Icons.check_box_outline_blank, color: Colors.white,),
+                                    icon: Icon(booksToEditOrDelete.containsKey(book.id)? Icons.check_box : Icons.check_box_outline_blank, color: Colors.white,),
                                   ))
                                 ],
                               );

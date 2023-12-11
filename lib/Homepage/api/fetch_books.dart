@@ -26,9 +26,9 @@ Future<String> fetchProduct(BuildContext context, WidgetRef ref) async {
      // print(user);
       Book book = Book.fromJson(bookData['book'], user);
       //print(book);
-      for (var reviewData in bookData['review']) {
+      for (var dataReview in bookData['review']) {
        // print('HERE');
-        Review review = Review.fromJson(reviewData);
+        Review review = Review.fromJson(dataReview);
         book.reviews.add(review);
       }
       booksMap[book.id] = book;

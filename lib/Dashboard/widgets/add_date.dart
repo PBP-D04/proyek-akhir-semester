@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 
 class DatePickerWidget extends StatelessWidget {
@@ -11,7 +10,7 @@ class DatePickerWidget extends StatelessWidget {
   });
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? selectedDate = await showDatePicker(
       context: context,
       initialDate: currentDate,
       firstDate: DateTime(2000),
@@ -30,8 +29,8 @@ class DatePickerWidget extends StatelessWidget {
         );
       },
     );
-    if (picked != null && picked != currentDate) {
-      onSubmitDate(picked);
+    if (selectedDate != null && selectedDate != currentDate) {
+      onSubmitDate(selectedDate);
     }
   }
 
@@ -39,33 +38,33 @@ class DatePickerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.symmetric(vertical: 8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: <Widget>[
-            Text(
-              'Tanggal Terbit Buku',
-              style: TextStyle(color: Colors.black),
-            ),
-            SizedBox(width: 10),
-            GestureDetector(
-              onTap: () => _selectDate(context),
-              child: Container(
-                padding: EdgeInsets.all(12),
-                decoration: BoxDecoration(
-                  border: Border.all(color: Colors.grey),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: Text(
-                  '${currentDate.toLocal()}'.split(' ')[0],
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue, // Ganti warna teks sesuai keinginan Anda
-                  ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Text(
+            'Tanggal Terbit Buku',
+            style: TextStyle(color: Colors.black),
+          ),
+          SizedBox(width: 10),
+          GestureDetector(
+            onTap: () => _selectDate(context),
+            child: Container(
+              padding: EdgeInsets.all(12),
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.grey),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: Text(
+                '${currentDate.toLocal()}'.split(' ')[0],
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Colors.blue, // Ganti warna teks sesuai keinginan Anda
                 ),
               ),
             ),
-          ],
-        ),
+          ),
+        ],
+      ),
     );
   }
 }
