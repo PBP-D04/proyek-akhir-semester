@@ -50,6 +50,10 @@ dependencies:
   cloudinary: ^1.2.0
   pusher_channels_flutter: ^2.2.0
   top_snackbar_flutter: ^3.1.0
+  url_launcher: ^6.0.13
+  flutter_downloader: ^1.11.5
+  permission_handler: ^11.0.1
+
 
 dev_dependencies:
   flutter_test:
