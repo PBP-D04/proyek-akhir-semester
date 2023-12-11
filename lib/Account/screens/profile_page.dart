@@ -17,6 +17,7 @@ class ProfilePage extends ConsumerStatefulWidget {
 }
 
 class _ProfilePageState extends ConsumerState<ProfilePage> {
+  final _formKey = GlobalKey<FormState>();
   GlobalKey<ScaffoldState> key1 = GlobalKey<ScaffoldState>();
   ResponsiveValue responsiveValue = ResponsiveValue();
   bool _isEditing = false;
@@ -58,6 +59,14 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   void _saveChanges() async {
+    if (_formKey.currentState!.validate()) {
+      // Form is valid
+      _formKey.currentState!.save();
+      _updateProfile();
+    }
+  }
+
+  void _updateProfile() async {
     String newName = _nameController.text;
     String newFullname = _fullnameController.text;
     String newCountry = _countryController.text;
@@ -68,6 +77,7 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     // Create a JSON payload with the updated profile data
     Map<String, dynamic> payload = {
+      'id': widget.user.id,
       'name': newName,
       'fullname': newFullname,
       'country': newCountry,
@@ -79,55 +89,53 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     // Send a POST request to the API endpoint
     final response = await updateProfile(payload);
+    print(response);
 
     if (response == 'SUCCESS') {
       // Profile updated successfully
-      void _showDialog() {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Profile Updated'),
-              content: Text('Your profile has been successfully updated.'),
-              actions: [
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      }
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Profile Updated'),
+            content: Text('Your profile has been successfully updated.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     } else {
       // Error occurred while updating profile
-      void _showDialog() {
-        showDialog(
-          context: context,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Failed to Update Profile'),
-              content: Text('There was an error while updating your profile.'),
-              actions: [
-                TextButton(
-                  child: Text('OK'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-        _nameController.text = widget.user.fullname;
-        _fullnameController.text = widget.user.fullname;
-        _countryController.text = widget.user.country;
-        _cityController.text = widget.user.city;
-        _ageController.text = widget.user.age.toString();
-        _phoneNumberController.text = widget.user.phoneNumber;
-      }
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Failed to Update Profile'),
+            content: Text('There was an error while updating your profile.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+      _nameController.text = widget.user.fullname;
+      _fullnameController.text = widget.user.fullname;
+      _countryController.text = widget.user.country;
+      _cityController.text = widget.user.city;
+      _ageController.text = widget.user.age.toString();
+      _phoneNumberController.text = widget.user.phoneNumber;
+      _passwordController.text = ''; // Clear password field
     }
 
     // Disable editing mode after saving changes
@@ -143,128 +151,180 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
       appBar: MyAppBar(scaffoldKey: key1, title: 'Profile',),
       body: Stack(
         children: [
-          Padding(
-            padding: EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Name",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _nameController,
-                  enabled: _isEditing,
-                  decoration: InputDecoration(
-                    hintText: "Enter your name",
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  "Full Name",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _fullnameController,
-                  enabled: _isEditing,
-                  decoration: InputDecoration(
-                    hintText: "Enter your full name",
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  "Country",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _countryController,
-                  enabled: _isEditing,
-                  decoration: InputDecoration(
-                    hintText: "Enter your country",
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  "City",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _cityController,
-                  enabled: _isEditing,
-                  decoration: InputDecoration(
-                    hintText: "Enter your city",
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  "Age",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _ageController,
-                  enabled: _isEditing,
-                  keyboardType: TextInputType.number,
-                  decoration: InputDecoration(
-                    hintText: "Enter your age",
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                Text(
-                  "Phone Number",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 16.0,
-                  ),
-                ),
-                SizedBox(height: 8.0),
-                TextFormField(
-                  controller: _phoneNumberController,
-                  enabled: _isEditing,
-                  keyboardType: TextInputType.phone,
-                  decoration: InputDecoration(
-                    hintText: "Enter your phone number",
-                  ),
-                ),
-                if (_isEditing) ...[
-                  SizedBox(height: 16.0),
-                  Text(
-                    "Password", // Add password field
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16.0,
-                    ),
-                  ),
-                  SizedBox(height: 8.0),
-                  TextFormField(
-                    controller: _passwordController,
-                    enabled: _isEditing,
-                    obscureText: true, // Hide password text
-                    decoration: InputDecoration(
-                      hintText: "Enter your password",
+          Form(
+            key: _formKey,
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Name",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        TextFormField(
+                          controller: _nameController,
+                          enabled: _isEditing,
+                          decoration: InputDecoration(
+                            hintText: "Enter your name",
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "This field must not be empty";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        Text(
+                          "Full Name",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        TextFormField(
+                          controller: _fullnameController,
+                          enabled: _isEditing,
+                          decoration: InputDecoration(
+                            hintText: "Enter your full name",
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "This field must not be empty";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        Text(
+                          "Country",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        TextFormField(
+                          controller: _countryController,
+                          enabled: _isEditing,
+                          decoration: InputDecoration(
+                            hintText: "Enter your country",
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "This field must not be empty";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        Text(
+                          "City",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        TextFormField(
+                          controller: _cityController,
+                          enabled: _isEditing,
+                          decoration: InputDecoration(
+                            hintText: "Enter your city",
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "This field must not be empty";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        Text(
+                          "Age",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        TextFormField(
+                          controller: _ageController,
+                          enabled: _isEditing,
+                          keyboardType: TextInputType.number,
+                          decoration: InputDecoration(
+                            hintText: "Enter your age",
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "This field must not be empty";
+                            }
+                            return null;
+                          },
+                        ),
+                        SizedBox(height: 16.0),
+                        Text(
+                          "Phone Number",
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 16.0,
+                          ),
+                        ),
+                        SizedBox(height: 8.0),
+                        TextFormField(
+                          controller: _phoneNumberController,
+                          enabled: _isEditing,
+                          keyboardType: TextInputType.phone,
+                          decoration: InputDecoration(
+                            hintText: "Enter your phone number",
+                          ),
+                          validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "This field must not be empty";
+                            }
+                            return null;
+                          },
+                        ),
+                        if (_isEditing) ...[
+                          SizedBox(height: 16.0),
+                          Text(
+                            "Password", // Add password field
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          TextFormField(
+                            controller: _passwordController,
+                            enabled: _isEditing,
+                            obscureText: true, // Hide password text
+                            decoration: InputDecoration(
+                              hintText: "Enter your password",
+                            ),
+                            validator: (String? value) {
+                            if (value == null || value.isEmpty) {
+                              return "This field must not be empty";
+                            }
+                            return null;
+                          },
+                          ),
+                        ],
+                      ],
                     ),
                   ),
                 ],
-              ],
+              ),
             ),
           ),
           Positioned(

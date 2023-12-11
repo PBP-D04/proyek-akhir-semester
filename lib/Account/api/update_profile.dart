@@ -11,6 +11,10 @@ Future<String> updateProfile(Map<String, dynamic> payload) async {
       body: jsonEncode(payload),
     );
 
+    if (response.statusCode != 200) {
+      print('Error: ${response.statusCode}');
+      return 'FAILED';
+    }
     print(response.body);
     return 'SUCCESS';
   } catch (error) {
