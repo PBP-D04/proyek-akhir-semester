@@ -21,7 +21,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   GlobalKey<ScaffoldState> key1 = GlobalKey<ScaffoldState>();
   ResponsiveValue responsiveValue = ResponsiveValue();
   bool _isEditing = false;
-  TextEditingController _nameController = TextEditingController();
   TextEditingController _fullnameController = TextEditingController();
   TextEditingController _countryController = TextEditingController();
   TextEditingController _cityController = TextEditingController();
@@ -32,7 +31,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   void initState() {
     super.initState();
-    _nameController.text = widget.user.fullname;
     _fullnameController.text = widget.user.fullname;
     _countryController.text = widget.user.country;
     _cityController.text = widget.user.city;
@@ -42,7 +40,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
   @override
   void dispose() {
-    _nameController.dispose();
     _fullnameController.dispose();
     _countryController.dispose();
     _cityController.dispose();
@@ -67,7 +64,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   }
 
   void _updateProfile() async {
-    String newName = _nameController.text;
     String newFullname = _fullnameController.text;
     String newCountry = _countryController.text;
     String newCity = _cityController.text;
@@ -78,7 +74,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
     // Create a JSON payload with the updated profile data
     Map<String, dynamic> payload = {
       'id': widget.user.id,
-      'name': newName,
       'fullname': newFullname,
       'country': newCountry,
       'city': newCity,
@@ -93,6 +88,17 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
 
     if (response == 'SUCCESS') {
       // Profile updated successfully
+      User newUser = User(
+        id: widget.user.id,
+        username: widget.user.username,
+        fullname: newFullname,
+        country: newCountry,
+        city: newCity,
+        age: newAge,
+        phoneNumber: newPhoneNumber,
+        profilePicture: widget.user.profilePicture,
+      );
+      widget.user = newUser;
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -129,7 +135,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
           );
         },
       );
-      _nameController.text = widget.user.fullname;
       _fullnameController.text = widget.user.fullname;
       _countryController.text = widget.user.country;
       _cityController.text = widget.user.city;
@@ -145,8 +150,9 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: key1,
       drawer: MyDrawer(
-          callBack: (identifier){}
+          callBack: (identifier){},
       ),
       appBar: MyAppBar(scaffoldKey: key1, title: 'Profile',),
       body: Stack(
@@ -162,28 +168,6 @@ class _ProfilePageState extends ConsumerState<ProfilePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          "Name",
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 16.0,
-                          ),
-                        ),
-                        SizedBox(height: 8.0),
-                        TextFormField(
-                          controller: _nameController,
-                          enabled: _isEditing,
-                          decoration: InputDecoration(
-                            hintText: "Enter your name",
-                          ),
-                          validator: (String? value) {
-                            if (value == null || value.isEmpty) {
-                              return "This field must not be empty";
-                            }
-                            return null;
-                          },
-                        ),
-                        SizedBox(height: 16.0),
                         Text(
                           "Full Name",
                           style: TextStyle(
