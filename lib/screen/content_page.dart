@@ -1,7 +1,9 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter/material.dart';
+import 'package:proyek_akhir_semester/Account/screens/profile_page.dart';
 import 'package:proyek_akhir_semester/Dashboard/screens/add_book_page.dart';
 import 'package:proyek_akhir_semester/Homepage/api/dummy.dart';
+import 'package:proyek_akhir_semester/Homepage/provider/maintain_index_page.dart';
 import 'package:proyek_akhir_semester/Homepage/screens/search_page.dart';
 import 'package:proyek_akhir_semester/models/responsive.dart';
 import 'package:proyek_akhir_semester/Homepage/screens/homepage.dart';
@@ -22,23 +24,23 @@ class ContentPage extends ConsumerStatefulWidget {
 }
 
 class _ContentPageState extends ConsumerState<ContentPage> {
-  int _selectedIndex = 0;
+  int _selectedIndex = MaintainIndexPage.indeks;
   GlobalKey<ScaffoldState> key1 = GlobalKey<ScaffoldState>();
-  PageController _pageController = PageController();
+  late PageController _pageController;
   ResponsiveValue responsiveValue = ResponsiveValue();
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    _pageController = PageController(initialPage:
+    widget.currentIndex == null? _selectedIndex : widget.currentIndex!
+    );
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      setState(() {
-        _selectedIndex = widget.currentIndex ?? 0;
-      });
-      print('p');
-      print(widget.currentIndex);
       if(widget.currentIndex != null){
-        print('ok');
-        _pageController.animateToPage(widget.currentIndex!, duration: Duration(milliseconds: 400), curve: Curves.ease);
+        setState(() {
+          _selectedIndex = widget.currentIndex!;
+          MaintainIndexPage.indeks = widget.currentIndex!;
+        });
       }
     });
   }
@@ -60,20 +62,19 @@ class _ContentPageState extends ConsumerState<ContentPage> {
         controller: _pageController,
         onPageChanged: (index) {
           setState(() {
-            _selectedIndex = index; // Update selectedIndex saat halaman berubah
+            _selectedIndex = index;
+            MaintainIndexPage.indeks = index;// Update selectedIndex saat halaman berubah
           });
         },
         children: <Widget>[
           Home(),
           AllBooksPage(),
           Dashboard(),
-          Center(
-            child: Text('belum dibuat 4'),
-          ),
+          ProfilePage(),
           // Tambahkan halaman lain sesuai kebutuhan
         ],
       ),
-      floatingActionButton: auth != null? FloatingActionButton(
+      floatingActionButton: auth != null && _selectedIndex != 3? FloatingActionButton(
         onPressed: () {
           Navigator.of(context).push(MaterialPageRoute(builder: (context){
             return AddBookPage();
@@ -86,7 +87,9 @@ class _ContentPageState extends ConsumerState<ContentPage> {
         currentIndex: _selectedIndex, // Gunakan selectedIndex di sini
         onTap: (index) {
           setState(() {
-            _selectedIndex = index; // Update selectedIndex saat ikon di bottom navigation bar dipilih
+            _selectedIndex = index;
+            MaintainIndexPage.indeks = index;
+           // Update selectedIndex saat ikon di bottom navigation bar dipilih
           });
           _pageController.animateToPage(
             index,

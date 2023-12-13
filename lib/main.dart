@@ -10,9 +10,9 @@ import 'package:proyek_akhir_semester/Homepage/api/fetch_categories.dart';
 import 'package:proyek_akhir_semester/ReviewBook/api/get_review.dart';
 import 'package:proyek_akhir_semester/api/api_config.dart';
 import 'package:proyek_akhir_semester/api/socket.dart';
-import 'package:proyek_akhir_semester/screen/login_page.dart';
+import 'package:proyek_akhir_semester/Account/screens/login_page.dart';
 import 'package:proyek_akhir_semester/screen/content_page.dart';
-import 'package:proyek_akhir_semester/screen/register_page.dart';
+import 'package:proyek_akhir_semester/Account/screens/register_page.dart';
 import 'package:proyek_akhir_semester/util/parent_ref_singleton.dart';
 import 'package:http/http.dart' as http;
 
@@ -58,9 +58,7 @@ class _AppState extends ConsumerState {
       ),
       initialRoute: '/',
       routes: {
-        '/login': (context) => LoginPage(),
-        '/register': (context) => RegisterPage(),
-        '/': (context) => ContentPage(key: UniqueKey(),),
+        '/': (context) => ContentPage(),
       },
     );
   }}

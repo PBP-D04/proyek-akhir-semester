@@ -66,6 +66,7 @@ class _SearchResultPageState extends ConsumerState<SearchResultPage>{
     bookList = bookList.where((book) => book.title.toLowerCase().contains(widget.searchText.toLowerCase())).toList();
 
     return Scaffold(
+      key: key1,
       drawer: MyDrawer(callBack: (identifier){
 
       },),

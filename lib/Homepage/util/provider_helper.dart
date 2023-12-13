@@ -85,7 +85,7 @@ List<Book> filterBooks (List<Book> books, String selectedCategory, Preference pr
   bool checkMinAvgRating(String rating, Book book)=> rating.toLowerCase() == 'default'? true :
       book.calculateAverageStars() >= double.parse(rating); // FIX
   bool checkAvailability(String availability, Book book) => availability.toLowerCase() == 'all'? true :
-      availability.toLowerCase() == 'PDF'? book.pdfAvailable : book.pdfAvailable;// FIX
+      availability.toLowerCase() == 'pdf'? book.pdfAvailable : book.epubAvailable;// FIX
   bool checkMinPrice(String minPrice,Book book) => book.price == null? true : book.price!.isEmpty? true :
   double.parse(minPrice) <= double.parse(book.price!);
   bool checkMaxPrice(String maxPrice,Book book) => book.price == null? true : book.price!.isEmpty? true :

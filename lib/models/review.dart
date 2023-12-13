@@ -1,7 +1,7 @@
 import 'package:proyek_akhir_semester/models/user.dart';
 class Review {
   final int id;
-  final User user;
+  User user;
   final int bookId;
   final String content;
   final int rating;

@@ -2,7 +2,7 @@ import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:proyek_akhir_semester/models/user.dart';
 import 'package:proyek_akhir_semester/Homepage/models/like.dart';
 class Book {
-  final User user;
+  User user;
   final int id;
   final String title;
   final String? subtitle;
