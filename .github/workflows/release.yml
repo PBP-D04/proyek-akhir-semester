@@ -19,7 +19,7 @@ jobs:   #here we specify the jobs - We could have multiple jobs
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: subosito/flutter-action@v1
+      - uses: isaui/flutter-action@v1
         with:
           channel: 'stable'
 
