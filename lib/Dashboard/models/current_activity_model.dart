@@ -1,5 +1,5 @@
 
-import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+import 'package:proyek_akhir_semester/DetailBook/models/comment.dart';
 
 import '../../Homepage/models/history.dart';
 import '../../models/review.dart';

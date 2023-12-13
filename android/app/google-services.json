@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "548397016677",
+    "project_id": "bookphoria-78fc0",
+    "storage_bucket": "bookphoria-78fc0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548397016677:android:2074783f5bd23e41fc088c",
+        "android_client_info": {
+          "package_name": "com.example.proyek_akhir_semester"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBGg6X05_D97Iglf7CRlFWzXAScEjH_aI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

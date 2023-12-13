@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+import 'package:proyek_akhir_semester/DetailBook/models/comment.dart';
 import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
 import 'package:proyek_akhir_semester/ReviewBook/provider/review_provider.dart';

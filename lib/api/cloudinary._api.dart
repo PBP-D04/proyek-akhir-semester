@@ -1,11 +1,8 @@
 import 'dart:typed_data';
-import 'dart:typed_data';
-
 import 'package:cloudinary_public/cloudinary_public.dart';
 import 'package:uuid/uuid.dart';
 import 'dart:io';
 
-import 'package:uuid/v4.dart';
 
 //final cloudinary = Cloudinary.signedConfig(
  // apiKey: '953851444543989',

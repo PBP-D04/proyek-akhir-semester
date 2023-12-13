@@ -6,7 +6,7 @@ import 'package:proyek_akhir_semester/Dashboard/api/delete_book.dart';
 import 'package:proyek_akhir_semester/Dashboard/models/current_activity_model.dart';
 import 'package:proyek_akhir_semester/Dashboard/screens/add_book_page.dart';
 import 'package:proyek_akhir_semester/Dashboard/widgets/current_activity.dart';
-import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+import 'package:proyek_akhir_semester/DetailBook/models/comment.dart';
 import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/models/book.dart';
 import 'package:proyek_akhir_semester/Homepage/models/history.dart';
