@@ -60,7 +60,7 @@ class _MyWidgetState extends ConsumerState<DaftarReview> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Tambah Review',
+                    'Add Review',
                     style: TextStyle(fontSize: 16.0, color: Colors.white),
                   ),
                 ],
@@ -72,9 +72,9 @@ class _MyWidgetState extends ConsumerState<DaftarReview> {
         Expanded(child: selectedList.isNotEmpty?ListView.builder(itemCount: selectedList.length,itemBuilder: (context, index){
           Review review = selectedList.elementAt(index);
           return ReviewItem(username:review.user.username , reviewId: review.id, bookId: widget.bookId,rating: review.rating,
-              reviewText: review.content, profileImage: review.user.profilePicture??'', photo: review.photoUrl, userId: review.user.id,);
+              reviewText: review.content, profileImage: review.user.profilePicture??'', bookImage: review.bookImageUrl, userId: review.user.id,);
         }): Center(
-          child: Text('Belum ada review', style: TextStyle(fontSize: responsiveValue.contentFontSize,color: Colors.black),),
+          child: Text('No reviews available', style: TextStyle(fontSize: responsiveValue.contentFontSize,color: Colors.black),),
         ))
       ],
     )),
