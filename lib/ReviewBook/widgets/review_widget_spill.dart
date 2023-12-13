@@ -22,9 +22,9 @@ class ReviewsWidget extends StatelessWidget {
         children: [
 
           if(this.reviews.length == 0)Center(
-            child: Text('Belum ada review', style: TextStyle(color: Colors.black, fontSize: 12),),
+            child: Text('No reviews available', style: TextStyle(color: Colors.black, fontSize: 12),),
           ),
-          ...reviews.map((e) => ReviewItem(userId: e.user.id, bookId: bookId, reviewId: e.id,username: e.user.username, rating: e.rating, reviewText: e.content,photo: e.photoUrl,profileImage: e.user.profilePicture??'')).toList().sublist(0, reviews.length > 2? 2 : reviews.length)
+          ...reviews.map((e) => ReviewItem(userId: e.user.id, bookId: bookId, reviewId: e.id,username: e.user.username, rating: e.rating, reviewText: e.content,bookImage: e.bookImageUrl,profileImage: e.user.profilePicture??'')).toList().sublist(0, reviews.length > 2? 2 : reviews.length)
         ],
       ),
     );

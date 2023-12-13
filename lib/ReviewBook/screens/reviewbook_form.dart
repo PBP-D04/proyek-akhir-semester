@@ -57,9 +57,9 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
             _comment = review.content;
             isEditUlasan = true;
           });
-        if(review.photoUrl != null){
-          if(review.photoUrl!.trim().isNotEmpty){
-            XFile? xfile = await xFileFromImageUrl(review.photoUrl!);
+        if(review.bookImageUrl != null){
+          if(review.bookImageUrl!.trim().isNotEmpty){
+            XFile? xfile = await xFileFromImageUrl(review.bookImageUrl!);
             if(xfile != null){
 
               final data = await xfile.readAsBytes();
@@ -94,11 +94,11 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
     String? resImage;
 
     if(user == null){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Anda belum login')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text("You haven't logged in")));
       return 'FAILED';
     }
     if(selectedBook == null){
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Buku telah terhapus')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('The book has been deleted')));
       return 'FAILED';
     }
     print('semoga bisaaaaaaaaaaaa');
@@ -131,7 +131,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
     } catch (error) {
       print('Error: $error');
       // Tangani kesalahan seperti masalah koneksi atau kesalahan server
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Terjadi kesalahan')));
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('There is an error')));
       return 'FAILED';
     }
   }
@@ -152,7 +152,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
       appBar: AppBar(
         elevation: 0,
         title:  Center(
-          child: Text('Form Ulasan', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigoAccent.shade700 ),),
+          child: Text('Form Review', style: TextStyle(fontWeight: FontWeight.bold, color: Colors.indigoAccent.shade700 ),),
         ),
         backgroundColor: Colors.white,
         foregroundColor: Colors.black
@@ -238,7 +238,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
                   mainAxisSize: MainAxisSize.max,
                   mainAxisAlignment: imageFile != null? MainAxisAlignment.start : MainAxisAlignment.center,
                   children: [
-                    if(imageFile == null) Center(child: Text('Tidak Ada Gambar', style:
+                    if(imageFile == null) Center(child: Text('No picture', style:
                     TextStyle(color: Colors.black, fontSize: rsval.contentFontSize ),),),
                     if(imageFile != null && imageData != null) MiniImage(imageData: imageData!, function: (){
                       setState(() {
@@ -254,7 +254,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
                 padding: const EdgeInsets.all(8.0),
                 child: TextFormField(
                   decoration: InputDecoration(
-                    hintText: "Tulis komentar Anda di sini...",
+                    hintText: "Write your review here...",
                     labelText: "Komentar (Opsional)",
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(5.0),
@@ -290,7 +290,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
                           context: context,
                           builder: (context) {
                             return AlertDialog(
-                              title: const Text('Ulasan berhasil tersimpan'),
+                              title: const Text('The review has been successfully saved'),
                               content: SingleChildScrollView(
                                 child: ListBody(
                                   children: [
@@ -315,7 +315,7 @@ class _ReviewFormPageState extends ConsumerState<ReviewFormPage> {
                       }
                     },
                     child:  Text(
-                      isEditUlasan == true? "Perbarui Ulasan":"Simpan Ulasan",
+                      isEditUlasan == true? "Update Review":"Save Review",
                       style: TextStyle(color: Colors.white),
                     ),
                   ),

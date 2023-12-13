@@ -3,13 +3,16 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyek_akhir_semester/DetailBook/widgets/product_mini_image.dart';
 import 'package:proyek_akhir_semester/ReviewBook/screens/reviewbook_form.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
+
+// Tampilan desain ulasan 
+
 class ReviewItem extends ConsumerWidget {
   final int userId;
   final String username;
   final int rating;
   final String reviewText;
   final String profileImage;
-  String? photo;
+  String? bookImage;
   final int reviewId;
   final int bookId;
 
@@ -21,7 +24,7 @@ class ReviewItem extends ConsumerWidget {
     required this.rating,
     required this.reviewText,
     required this.profileImage,
-    this.photo
+    this.bookImage,
   });
 
   @override
@@ -77,9 +80,9 @@ class ReviewItem extends ConsumerWidget {
           SizedBox(height: 8.0),
           Text(reviewText),
           SizedBox(height: 8.0),
-         if(photo != null && photo!.isNotEmpty) SizedBox(
+         if(bookImage != null && bookImage!.isNotEmpty) SizedBox(
            height: 120,
-           child: ProductMiniImage(isSelected: false,function: (str){}, imageData: photo!,),
+           child: ProductMiniImage(isSelected: false,function: (str){}, imageData: bookImage!,),
          )
         ],
       ),

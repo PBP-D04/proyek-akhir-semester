@@ -13,6 +13,8 @@ import 'package:proyek_akhir_semester/widgets/appbar.dart';
 
 import '../../Homepage/models/book.dart';
 
+// Mengedit ulasan yang telah dibuat sebelumnya
+
 class DaftarReviewSaya extends ConsumerStatefulWidget {
   int userId;
   DaftarReviewSaya({super.key, required this.userId});
@@ -52,11 +54,11 @@ class _MyWidgetState extends ConsumerState<DaftarReviewSaya> {
                   children: [
                     if(bookReviews.containsKey(review.bookId))BookListTile(book: bookReviews[review.bookId]!),
                     ReviewItem(username:review.user.username , reviewId: review.id, bookId: review.bookId,rating: review.rating,
-                      reviewText: review.content, profileImage: review.user.profilePicture??'', photo: review.photoUrl, userId: review.user.id,)
+                      reviewText: review.content, profileImage: review.user.profilePicture??'', bookImage: review.bookImageUrl, userId: review.user.id,)
                   ],
                 );
               }): Center(
-                child: Text('Belum ada review', style: TextStyle(fontSize: responsiveValue.contentFontSize,color: Colors.black),),
+                child: Text('No reviews available', style: TextStyle(fontSize: responsiveValue.contentFontSize,color: Colors.black),),
               ))
             ],
           )),

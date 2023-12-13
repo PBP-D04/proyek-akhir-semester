@@ -338,6 +338,12 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                       :pickItem!.description!.trim().isEmpty? 'Tidak ada deskripsi': pickItem!.description!
                     , maxLines: 5,),
                   SizedBox(height: 4,),
+                  Text('Maturity Rating', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                      fontSize: responsiveValue.titleFontSize),),
+                  SizedBox(height: 4,),
+                  ExpandableDescription(text: pickItem!.maturityRating == 'MATURE'? 'Dewasa': 'Semua Umur'
+                    , maxLines: 5,),
+                  SizedBox(height: 4,),
                   Text('Author', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
                       fontSize: responsiveValue.titleFontSize),),
                   SizedBox(height: 4,),

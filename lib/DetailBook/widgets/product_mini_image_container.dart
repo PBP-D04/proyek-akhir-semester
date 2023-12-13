@@ -11,7 +11,6 @@ class ProductMiniImageContainer extends StatelessWidget{
 
   @override
   Widget build(BuildContext context) {
-    print('holy shit');
     // TODO: implement build
     return LayoutBuilder(builder: (context, constraint){
       return Container(
