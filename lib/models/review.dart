@@ -5,7 +5,7 @@ class Review {
   final int bookId;
   final String content;
   final int rating;
-  final String? photoUrl;
+  final String? bookImageUrl;
   final DateTime dateAdded;
 
   Review({
@@ -14,7 +14,7 @@ class Review {
     required this.bookId,
     required this.content,
     required this.rating,
-    this.photoUrl,
+    this.bookImageUrl,
     required this.dateAdded,
   });
 
@@ -27,7 +27,7 @@ class Review {
       bookId: json['book_id'],
       content: json['content'],
       rating: json['rating'],
-      photoUrl: json['photo_url']??'',
+      bookImageUrl: json['photo_url']??'',
       dateAdded: DateTime.parse(json['date_added']),
     );
   }

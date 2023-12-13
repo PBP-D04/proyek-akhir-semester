@@ -7,6 +7,10 @@ import '../../api/api_config.dart';
 import '../../util/parent_ref_singleton.dart';
 import 'package:http/http.dart' as http;
 
+// Mengambil data ulasan dari bertipe POST
+// Mengonversinya menjadi objek dalam Dart
+// Memperbarui state aplikasi dengan data ulasan tersebut
+
 Future<String> fetchReview() async {
   final ref = WidgetRefSingleton.instance.getRef!;
   const baseUrlStr = BASE_URL;
