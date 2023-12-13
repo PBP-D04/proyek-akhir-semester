@@ -694,9 +694,9 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
     );
   }
   
-  void launchPdfLink(String pdfLink) async {
-      if (await canLaunch(pdfLink)) {
-        await launch(pdfLink);
+  Future<void> launchPdfLink(String pdfLink) async {
+      if (await canLaunchUrl(Uri.parse(pdfLink))) {
+        await launchUrl(Uri.parse(pdfLink), mode: LaunchMode.inAppBrowserView);
       } else {
         throw 'Could not launch $pdfLink';
       }
