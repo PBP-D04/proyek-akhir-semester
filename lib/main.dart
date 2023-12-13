@@ -58,7 +58,7 @@ class _AppState extends ConsumerState {
       ),
       initialRoute: '/',
       routes: {
-        '/': (context) => ContentPage(key: UniqueKey(),),
+        '/': (context) => ContentPage(),
       },
     );
   }}

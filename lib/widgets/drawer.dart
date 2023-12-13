@@ -4,6 +4,7 @@ import 'package:proyek_akhir_semester/Account/screens/login_page.dart';
 import 'package:proyek_akhir_semester/Account/screens/profile_page.dart';
 import 'package:proyek_akhir_semester/Account/screens/register_page.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
+import 'package:proyek_akhir_semester/screen/content_page.dart';
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
 class MyDrawer extends ConsumerStatefulWidget{
 
@@ -89,10 +90,9 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => ProfilePage(user: userData,)), // Navigate to the register page
-                        );
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx){
+                          return ContentPage(currentIndex: 3,);
+                        }));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol
@@ -114,6 +114,9 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
                     ElevatedButton(
                       onPressed: () {
                         // Tambahkan aksi yang ingin dilakukan saat tombol ditekan
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx){
+                          return ContentPage(currentIndex: 2,);
+                        }));
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blue.shade500, // Warna latar belakang tombol
@@ -200,7 +203,9 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
             title: Text('Home', style: TextStyle(fontSize: responsiveValue.subtitleFontSize),),
             onTap: () {
               Scaffold.of(context).closeDrawer();
-              widget.callBack('HOME');
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx){
+                return ContentPage();
+              }));
               // Tindakan ketika ListTile Halaman Utama diklik
               // Misalnya: Navigasi ke halaman utama
             },
@@ -211,7 +216,9 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
             title: Text('Books', style: TextStyle(fontSize: responsiveValue.subtitleFontSize)),
             onTap: () {
               Scaffold.of(context).closeDrawer();
-              widget.callBack('BOOKS');
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx){
+                return ContentPage(currentIndex: 1,);
+              }));
               // Tindakan ketika ListTile Tambah Item diklik
               // Misalnya: Navigasi ke halaman tambah item
             },
@@ -221,7 +228,9 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
             title: Text('Dashboard', style: TextStyle(fontSize: responsiveValue.subtitleFontSize)),
             onTap: () {
               Scaffold.of(context).closeDrawer();
-              widget.callBack('DASHBOARD');
+              Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (ctx){
+                return ContentPage(currentIndex: 2,);
+              }));
               // Tindakan ketika ListTile Tambah Item diklik
               // Misalnya: Navigasi ke halaman tambah item
             },
@@ -230,14 +239,7 @@ class _MyDrawerState extends ConsumerState<MyDrawer>{
           Container(
             child: Row(
               children: [
-                Flexible(child: ListTile(
-                  leading: Icon(Icons.settings), // Ikon untuk halaman utama
-                  title: Text('Settings', style: TextStyle(fontSize: responsiveValue.subtitleFontSize),),
-                  onTap: () {
-                    // Tindakan ketika ListTile Halaman Utama diklik
-                    // Misalnya: Navigasi ke halaman utama
-                  },
-                ),),
+
                 userData != null ? Flexible(child: ListTile(
                   leading: Icon(Icons.logout), // Ikon untuk halaman utama
                   title: Text('Logout', style: TextStyle(fontSize: responsiveValue.subtitleFontSize),),

@@ -9,6 +9,7 @@ import 'dart:convert';
 import 'package:proyek_akhir_semester/api/api_config.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
 import 'package:proyek_akhir_semester/Account/screens/register_page.dart';
+import 'package:proyek_akhir_semester/widgets/cloud_background.dart';
 
 import '../../models/user.dart';
 
@@ -63,7 +64,19 @@ class _LoginPageState extends ConsumerState<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        automaticallyImplyLeading: false,
+        elevation: 0,
+        backgroundColor: Colors.white,
+        actions: [
+          Expanded(child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text('Login ke Bookphoria', style: TextStyle(fontWeight:FontWeight.bold, fontSize: 18 , color: Colors.indigoAccent.shade700),),
+
+            ],
+          )),
+        ],
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -89,9 +102,13 @@ class _LoginPageState extends ConsumerState<LoginPage> {
             ),
             const SizedBox(height: 20.0),
             ElevatedButton(
+              style: ButtonStyle(
+                backgroundColor:  MaterialStateProperty.all<Color>(Colors.indigoAccent.shade700),
+                minimumSize: MaterialStateProperty.all(Size(double.infinity, 50)), // Mengatur tinggi tombol dan lebarnya ke maksimum
+              ),
               onPressed: () async {
-               await  loginUser();// Panggil fungsi loginUser ketika tombol ditekan
-               fetchHistory();
+                await  loginUser();// Panggil fungsi loginUser ketika tombol ditekan
+                fetchHistory();
               },
               child: const Text('Login'),
             ),
@@ -103,11 +120,14 @@ class _LoginPageState extends ConsumerState<LoginPage> {
                   MaterialPageRoute(builder: (context) => RegisterPage()), // Navigate to the register page
                 );
               },
+              style: ButtonStyle(
+                minimumSize: MaterialStateProperty.all(Size(double.infinity, 50)), // Mengatur tinggi tombol dan lebarnya ke maksimum
+              ),
               child: const Text('Create account'),
             ),
           ],
         ),
-      ),
+      )
     );
   }
 }

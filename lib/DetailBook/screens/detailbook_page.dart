@@ -259,7 +259,7 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
 
                           ),
                           SizedBox(height: 4,),
-                          Text(pickItem!.price != null ?'Rp${pickItem!.price?.replaceAll(RegExp(r"(\.[0]*$)"), "")}':'FREE',
+                          Text(pickItem!.price != null && pickItem.price!.isNotEmpty ?'Rp${pickItem!.price?.replaceAll(RegExp(r"(\.[0]*$)"), "")}':'FREE',
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -331,11 +331,18 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                   }),
                   
                   SizedBox(height: 4,),
+                  Text('Deskripsi', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                      fontSize: responsiveValue.titleFontSize),),
+                  SizedBox(height: 4,),
+                  ExpandableDescription(text: pickItem!.description == null? 'Tidak ada deskripsi'
+                      :pickItem!.description!.trim().isEmpty? 'Tidak ada deskripsi': pickItem!.description!
+                    , maxLines: 5,),
+                  SizedBox(height: 4,),
                   Text('Author', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
                       fontSize: responsiveValue.titleFontSize),),
                   SizedBox(height: 4,),
                   ExpandableDescription(
-                    text: pickItem!.authors == null
+                    text: pickItem!.authors == null || pickItem.authors.isEmpty
                       ? '-'
                       : pickItem!.authors is String
                         ? pickItem!.authors as String
@@ -389,32 +396,76 @@ class _ProductDetailPageState extends ConsumerState<ProductDetailPage>{
                   ExpandableDescription(text: pickItem!.publishedDate == null? '-':pickItem!.publishedDate!.trim().isEmpty? 'Tidak ada published date': pickItem!.publishedDate!
                     , maxLines: 5,),
 
-                  SizedBox(height: 4),
-                  if (pickItem?.pdfLink != null && pickItem!.pdfLink!.isNotEmpty)
-                    ElevatedButton(
-                      onPressed: () {
-                        launchPdfLink(pickItem!.pdfLink!);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.indigoAccent.shade400
-                      ),
-                      child: Text(
-                        'Download E-Book',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: responsiveValue.titleFontSize,
-                        ),
-                      ),
-                    )
-                  else
-                    Text(
-                      'E-Book not available for download.',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: responsiveValue.titleFontSize,
-                      ),
-                    ),
+                  if(pickItem.pdfAvailable || pickItem.epubAvailable ||
+                      (pickItem.buyLink != null && pickItem.buyLink!.isNotEmpty))Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      SizedBox(height: 4,),
+                      Text('Link Buku', textAlign: TextAlign.left, style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold,
+                          fontSize: responsiveValue.titleFontSize),),
+                      SizedBox(height: 4,),
+                      Wrap(
+                        spacing: 8,
+                        runSpacing: 4,
+                        children: [
+                          if (  pickItem!.saleability  && pickItem.buyLink != null && pickItem!.buyLink!.isNotEmpty)
+                            ElevatedButton(
+                              onPressed: () {
+                                launchPdfLink(pickItem!.buyLink!);
+                              },
 
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.blue.shade400,
+                                  padding: EdgeInsets.all(16)
+                              ),
+                              child: Text(
+                                'Beli Buku',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: responsiveValue.titleFontSize,
+                                ),
+                              ),
+                            ),
+                          if ( pickItem!.pdfAvailable && pickItem!.pdfLink != null && pickItem!.pdfLink!.isNotEmpty)
+                            ElevatedButton(
+                              onPressed: () {
+                                launchPdfLink(pickItem!.pdfLink!);
+                              },
+
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.indigoAccent.shade400,
+                                  padding: EdgeInsets.all(16)
+                              ),
+                              child: Text(
+                                'PDF',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: responsiveValue.titleFontSize,
+                                ),
+                              ),
+                            ),
+                          if (pickItem!.epubAvailable && pickItem!.epubLink != null && pickItem!.epubLink!.isNotEmpty)
+                            ElevatedButton(
+                              onPressed: () {
+                                launchPdfLink(pickItem!.epubLink!);
+                              },
+
+                              style: ElevatedButton.styleFrom(
+                                  backgroundColor: Colors.black,
+                                  padding: EdgeInsets.all(16)
+                              ),
+                              child: Text(
+                                'EPUB',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: responsiveValue.titleFontSize,
+                                ),
+                              ),
+                            )
+                        ],
+                      ),
+                    ],
+                  ),
                   SizedBox(height: 8,),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,

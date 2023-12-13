@@ -5,6 +5,7 @@ import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart'
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
 import 'package:proyek_akhir_semester/ReviewBook/provider/review_provider.dart';
 import 'package:proyek_akhir_semester/models/review.dart';
+import 'package:proyek_akhir_semester/provider/auth_provider.dart';
 import 'package:pusher_channels_flutter/pusher_channels_flutter.dart';
 
 import '../Homepage/models/book.dart';
@@ -32,14 +33,55 @@ Future<void> initPusher(context, WidgetRef ref) async {
 
 Future<void> onEvent(PusherEvent event, context, WidgetRef ref) async{
   if(event.channelName == 'bookphoria'){ // Nama Channel
-    if(event.data.runtimeType == String){
-     // print('antum string?');
-    }
-   // print('apa sihhh..');
 
-    
 
     switch (event.eventName) {
+      case 'update-profile':
+        final data = event.data;
+        print('cek');
+        dynamic decodedData = jsonDecode(jsonEncode(data));
+        if(decodedData.runtimeType == String){
+          decodedData = jsonDecode(decodedData);
+        }
+        var message = decodedData['message'];
+        if(message.runtimeType == String){
+          message = jsonDecode(message);
+        }
+        int userId = message['id'];
+        User updatedUser = User.fromJson(message);
+        Map<int, Book> books = ref.watch(booksProvider);
+        books.updateAll((key, value){
+          if(value.user.id == userId){
+            value.user = updatedUser;
+          }
+          return value;
+        });
+
+        Map<int, Review>reviews = ref.watch(reviewListProvider);
+        reviews.updateAll((key, value) {
+          if(value.user.id == userId){
+            value.user = updatedUser;
+          }
+          return value;
+        });
+        List<Comment> comments = ref.watch(commentNotifierProvider);
+        comments.forEach((element) {
+          element.profilePicture = updatedUser.profilePicture;
+        });
+          final currUser = ref.watch(authProvider);
+          if(currUser != null){
+            if(currUser.id == userId){
+              ref.read(authProvider.notifier).setUserData(updatedUser);
+            }
+          }
+          ref.read(commentNotifierProvider.notifier).state = [...comments];
+          ref.read(booksProvider.notifier).setItems({...books});
+          ref.read(reviewListProvider.notifier).setAll({...reviews});
+        break;
+
+
+
+
       case 'new-book':
         final data = event.data;
         dynamic decodedData = jsonDecode(jsonEncode(data));
