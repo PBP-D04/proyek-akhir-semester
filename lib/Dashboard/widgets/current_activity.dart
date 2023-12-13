@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyek_akhir_semester/Dashboard/models/current_activity_model.dart';
-import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+import 'package:proyek_akhir_semester/DetailBook/models/comment.dart';
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/widgets/book_tile.dart';
 import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:proyek_akhir_semester/provider/auth_provider.dart';
 import 'package:proyek_akhir_semester/util/time.dart';
-
 import '../../Homepage/models/book.dart';
 import '../../Homepage/models/history.dart';
-import '../../models/user.dart';
+
 
 class CurrentActivityWidget extends ConsumerWidget {
   CurrentActivity currentActivity;
