@@ -24,7 +24,7 @@ jobs:   #here we specify the jobs - We could have multiple jobs
           channel: 'stable'
 
       - name: Build Gradle
-        run: flutter build apk --debug
+        run: flutter build apk --release --output-file=bookphoria.apk
       - run: ls build/app/outputs/flutter-apk
       # - run: ls build/app/outputs/bundle/release
       - name: Upload artifact to Firebase App Distribution
