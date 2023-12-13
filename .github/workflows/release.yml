@@ -28,7 +28,7 @@ jobs:   #here we specify the jobs - We could have multiple jobs
       - run: ls build/app/outputs/flutter-apk
       # - run: ls build/app/outputs/bundle/release
       - name: Upload artifact to Firebase App Distribution
-        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        uses: isaui/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{secrets.APP_ID}}
           serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
