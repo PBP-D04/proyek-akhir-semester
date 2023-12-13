@@ -2,19 +2,19 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+
 import 'package:proyek_akhir_semester/DetailBook/api/fetch_comment.dart';
-import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart';
+
 import 'package:proyek_akhir_semester/Homepage/api/fetch_books.dart';
 import 'package:proyek_akhir_semester/Homepage/api/fetch_categories.dart';
 import 'package:proyek_akhir_semester/ReviewBook/api/get_review.dart';
-import 'package:proyek_akhir_semester/api/api_config.dart';
+
 import 'package:proyek_akhir_semester/api/socket.dart';
-import 'package:proyek_akhir_semester/Account/screens/login_page.dart';
+
 import 'package:proyek_akhir_semester/screen/content_page.dart';
-import 'package:proyek_akhir_semester/Account/screens/register_page.dart';
+
 import 'package:proyek_akhir_semester/util/parent_ref_singleton.dart';
-import 'package:http/http.dart' as http;
+
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 Future<void> main() async {

@@ -1,4 +1,4 @@
-import 'package:proyek_akhir_semester/models/user.dart';
+
 
 class Comment{
   String username;

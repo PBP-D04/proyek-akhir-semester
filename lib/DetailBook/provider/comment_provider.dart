@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+import 'package:proyek_akhir_semester/DetailBook/models/comment.dart';
 
 class CommentNotifier extends StateNotifier<List<Comment>> {
   CommentNotifier() : super([]);

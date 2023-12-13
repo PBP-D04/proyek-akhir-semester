@@ -2,17 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:proyek_akhir_semester/Dashboard/api/delete_book.dart';
 import 'package:proyek_akhir_semester/Dashboard/models/current_activity_model.dart';
-import 'package:proyek_akhir_semester/Dashboard/screens/add_book_page.dart';
+
 import 'package:proyek_akhir_semester/Dashboard/widgets/current_activity.dart';
-import 'package:proyek_akhir_semester/DetailBook/Models/comment.dart';
+import 'package:proyek_akhir_semester/DetailBook/models/comment.dart';
 import 'package:proyek_akhir_semester/DetailBook/provider/comment_provider.dart';
 import 'package:proyek_akhir_semester/Homepage/models/book.dart';
-import 'package:proyek_akhir_semester/Homepage/models/history.dart';
+
 import 'package:proyek_akhir_semester/Homepage/provider/books_provider.dart';
-import 'package:proyek_akhir_semester/Homepage/provider/search_history_provider.dart';
+
 import 'package:proyek_akhir_semester/ReviewBook/provider/review_provider.dart';
-import 'package:proyek_akhir_semester/ReviewBook/screens/myreviewbook_page.dart';
-import 'package:proyek_akhir_semester/provider/auth_provider.dart';
+
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
 import 'package:proyek_akhir_semester/widgets/appbar.dart';
 import 'package:proyek_akhir_semester/widgets/drawer.dart';
