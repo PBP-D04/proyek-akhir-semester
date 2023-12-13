@@ -32,4 +32,4 @@ jobs:   #here we specify the jobs - We could have multiple jobs
         with:
           appId: ${{secrets.APP_ID}}
           serviceCredentialsFileContent: ${{secrets.CREDENTIAL_FILE_CONTENT}}
-          file: build/app/outputs/flutter-apk/app-debug.apk
+          file: build/app/outputs/flutter-apk/app-release.apk
