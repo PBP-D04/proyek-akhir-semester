@@ -1,4 +1,4 @@
-package com.example.proyek_akhir_semester
+package com.bookphoria
 
 import io.flutter.embedding.android.FlutterActivity
 

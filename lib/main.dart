@@ -58,7 +58,7 @@ class _AppState extends ConsumerState {
     return  MaterialApp(
       title: 'Bookphoria',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        useMaterial3: false,
       ),
       initialRoute: '/',
       routes: {
