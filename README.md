@@ -1,5 +1,7 @@
 Link CI/CD App: 
 - [![Build status](https://build.appcenter.ms/v0.1/apps/d7c61c99-8897-41e6-839c-e5499d9c710b/branches/main/badge)](https://appcenter.ms)
+tautan publik:
+- https://install.appcenter.ms/users/isaui/apps/bookphoria-final/distribution_groups/public
 # Proyek Akhir Semester D04
 
 ## Nama Aplikasi: Bookphoria
