@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:548397016677:android:2074783f5bd23e41fc088c",
+        "mobilesdk_app_id": "1:548397016677:android:8c88d5b3551d63f7fc088c",
         "android_client_info": {
-          "package_name": "com.example.proyek_akhir_semester"
+          "package_name": "com.bookphoria"
         }
       },
       "oauth_client": [],
