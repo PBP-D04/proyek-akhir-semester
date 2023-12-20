@@ -1,4 +1,4 @@
-Link CI/CD App: https://appdistribution.firebase.dev/i/c86b7950eb34984e
+Link CI/CD App: https://appdistribution.firebase.google.com/testerapps/1:548397016677:android:8c88d5b3551d63f7fc088c/releases/5fmuhlsnualbg?utm_source=firebase-console
 # Proyek Akhir Semester D04
 
 ## Nama Aplikasi: Bookphoria
