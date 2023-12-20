@@ -10,7 +10,7 @@ import 'package:proyek_akhir_semester/models/responsive.dart';
 import 'package:proyek_akhir_semester/models/review.dart';
 import 'package:proyek_akhir_semester/util/responsive_config.dart';
 import 'package:proyek_akhir_semester/widgets/appbar.dart';
-
+import 'package:proyek_akhir_semester/widgets/drawer.dart';
 import '../../Homepage/models/book.dart';
 
 // Mengedit ulasan yang telah dibuat sebelumnya
@@ -40,6 +40,9 @@ class _MyWidgetState extends ConsumerState<DaftarReviewSaya> {
     responsiveValue.setResponsive(context);
     return Scaffold(
       key: key1,
+      drawer: MyDrawer(callBack: (identifier){
+
+      },),
       appBar: MyAppBar(
         scaffoldKey: key1,
         title: 'My Reviews List',
